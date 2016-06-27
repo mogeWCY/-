@@ -1,6 +1,4 @@
-# vue-vueRouter-webpack-example
-
-> Example using [vue-loader](https://github.com/vuejs/vue-loader) with [Webpack](http://webpack.github.io).
+#  项目进行中  ，未完成 
 
 ## Setup
 
