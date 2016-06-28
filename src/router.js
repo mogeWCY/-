@@ -26,6 +26,9 @@ module.exports = function(router){
         },
         'home' :{
             component:require('./views/home.vue')
+        },
+        'home/followees':{
+            component:require('./views/followees.vue')
         }
     })
 	

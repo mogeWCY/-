@@ -70,7 +70,6 @@ export default{
 </script>
 <style>
 	.flow-container{
-	     width: 630px;
 	     margin: 20px auto;
 	}
 	.flow-container>h2{

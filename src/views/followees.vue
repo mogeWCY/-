@@ -31,33 +31,14 @@
            </div>
   		</div>
   	</div>
-  	<div class="my-read-books">
-       <h2>我读过的书</h2>
-       <div>
-            <a v-for="book in userInfo.myreadbooks" href="#" :title="book.bookName">
-                <img :src="book.bookCoverImgUrl">
-            </a>
-       </div>
-    </div>
-    <div class="my-want-books">
-         <h2>我想读的书</h2>
-         <div>
-            <a v-for="book in userInfo.mywantbooks" href="#" :title="book.bookName">
-               <img  :src="book.bookCoverImgUrl" >
-            </a>
-         </div>
-    </div>
-  	<div class="my-books">
-        <h2>我拥有的书</h2>
-        <div>
-        <a v-for="book in userInfo.mybooks" href="#" :title="book.bookName">
-           <img :src="book.bookCoverImgUrl">
-        </a>
-        </div>
-    </div>
-  	<div class="my-comments">
-       <mycomments></mycomments> 
-    </div>
+  	<div class="followees-info">
+  		<div v-for='person in userInfo.concerndPersons'>
+  			<img :src="person.userImgUrl">
+  			<a href="#"> {{ person.username }} </a>
+  			{{ person.userprofile }}
+  			<button type="button">取消关注</button>
+  		</div>
+  	</div>
   </div>
   <myfooter></myfooter>
 </template>
@@ -72,58 +53,32 @@ export default {
             address:['湖北省','武汉市','洪山区','珞瑜路','1037号'],
             userprofile:'音浪太强，不晃会被撞到地上',
             concerndTags:["文学","历史","小说","童话","故事","科幻","耽美","诗歌"],
-            mybooks:[
-                    {
-                       bookId:110,
-                       bookCoverImgUrl:'https://img3.doubanio.com/mpic/s27279654.jpg',
-                       bookName:'活着'
-                    },
-                    {
-                      bookId:111,
-                      bookCoverImgUrl:'https://img1.doubanio.com/mpic/s8875457.jpg',
-                      bookName:'西游记'
-                    },
-                    {
-                      bookId:112,
-                      bookCoverImgUrl:'https://img1.doubanio.com/mpic/s3846669.jpg',
-                      bookName:'水浒传'
-                    }
-            ],
-            mywantbooks:[
-                  {
-                     bookId:123,
-                     bookCoverImgUrl:'https://img3.doubanio.com/lpic/s28829910.jpg',
-                     bookName:'回到初衷'
-                  },
-                  {
-                     bookId:124,
-                     bookCoverImgUrl:"https://img3.doubanio.com/lpic/s28672942.jpg",
-                     bookName:"超越帝国"
-                  },
-                  {
-                    bookId:125,
-                    bookCoverImgUrl:"https://img3.doubanio.com/lpic/s28622011.jpg",
-                    bookName:"雕刻时光"
-                  }
-            ],
-            myreadbooks:[
-                 {
-                   bookId:126,
-                   bookCoverImgUrl:'https://img1.doubanio.com/lpic/s28673707.jpg',
-                   bookName:'死神的浮力'
-                 },
-                 {
-                   bookId:127,
-                   bookCoverImgUrl:'https://img3.doubanio.com/spic/s28588315.jpg',
-                   bookName:'精进'
-                 },
-                 {
-                   bookId:128,
-                   bookCoverImgUrl:'https://img3.doubanio.com/spic/s28579451.jpg',
-                   bookName:'来信勿拆'
-                 }
-            ],
-            concerndPersons:['s']
+            concerndPersons:[
+               {
+                  userId:111111,
+                  userImgUrl:'https://img3.doubanio.com/icon/u28165185-4.jpg',
+                  username:'Awee',
+                  userprofile:'快上车，没时间解释了'
+               },
+               {
+                  userId:222222,
+                  userImgUrl:'https://img3.doubanio.com/icon/u41952166-15.jpg',
+                  username:'林taro',
+                  userprofile:'想要做一个写代码很美的人'
+               },
+               {
+                  userId:333333,
+                  userImgUrl:'https://img1.doubanio.com/icon/u28690777-19.jpg',
+                  username:'空白白白白',
+                  userprofile:'一个数据工程师'
+               },
+               {
+                  userId:444444,
+                  userImgUrl:'https://img3.doubanio.com/icon/u3206680-10.jpg',
+                  username:'羽小团',
+                  userprofile:'处女座，不解释'
+               }
+            ]
            };
            return {
              	userInfo:userInfo
@@ -201,35 +156,6 @@ export default {
   float: left;
   margin-right: 20px;
 }
-.my-read-books,.my-want-books,.my-books{
-  width: 90%;
-  margin: 20px auto;
-}
-.my-read-books>div,.my-want-books>div,.my-books>div{
-   margin:30px auto;
-   display: flex;
-   display: -webkit-flex;
-   flex-wrap: wrap;
-}
-.my-read-books img{
-   width: 80px;
-   height: 120px;
-   margin-left: 30px;
-}
-.my-want-books img{
-   width: 80px;
-   height: 120px;
-   margin-left: 30px;
-}
-.my-books img{
-   width: 80px;
-   height: 120px;
-   margin-left: 30px;
-}
-.my-comments{
-  width: 90%;
-  margin: 20px auto;
-}
 .home .relation-info  button{
    border: 1px solid #ddd;
     cursor: pointer;
@@ -249,5 +175,11 @@ export default {
   font-size: 24px;
   color:blue;
   cursor: pointer;
+}
+.home .followees-info>div{
+  border-bottom:1px solid #ddd;
+}
+.home .followees-info>div:first-child{
+	border-top:1px solid #ddd;
 }
 </style>
