@@ -27,16 +27,17 @@
            <div>
              <p>关注了<span class="point">{{userInfo.concerndPersons.length }}</span>人</p>
              <button type="button">我要关注</button>
-             <button type="button">我要换书</button>
            </div>
   		</div>
   	</div>
   	<div class="followees-info">
   		<div v-for='person in userInfo.concerndPersons'>
   			<img :src="person.userImgUrl">
+        <div class="main-content">
   			<a href="#"> {{ person.username }} </a>
-  			{{ person.userprofile }}
-  			<button type="button">取消关注</button>
+  			<p>{{ person.userprofile }}</p>
+        </div>
+          <button type="button">取消关注</button>
   		</div>
   	</div>
   </div>
@@ -88,7 +89,7 @@ export default {
 
 		},
 		ready () {
-              document.title='个人主页';
+              document.title='关注的人';
               var sexIcons=document.getElementsByName('sex');
               if(this.userInfo.sex=='男'){
                  sexIcons[1].style.display='none';
@@ -106,7 +107,7 @@ export default {
 </script>
 <style>
 .home{
-   width: 80%;
+   width: 64%;
    margin: 20px auto;
    border:1px solid #ddd;
    border-radius:5px;
@@ -157,7 +158,7 @@ export default {
   margin-right: 20px;
 }
 .home .relation-info  button{
-   border: 1px solid #ddd;
+    border: 1px solid #ddd;
     cursor: pointer;
     border-radius: 5px;
     background: #0f88eb;
@@ -176,10 +177,50 @@ export default {
   color:blue;
   cursor: pointer;
 }
+.home .followees-info{
+  margin-top: 50px;
+}
 .home .followees-info>div{
   border-bottom:1px solid #ddd;
+  position: relative;
+  padding:10px 50px;
+}
+.home .followees-info>div::after{
+   content: "";
+   display: block;
+   clear: both;
+}
+.home .followees-info img {
+  float: left;
+  width: 70px;
+  height: 70px;
 }
 .home .followees-info>div:first-child{
 	border-top:1px solid #ddd;
+}
+.home .followees-info button{
+   position: absolute;
+   top:20px;
+   right: 50px;
+   border: 1px solid #ddd;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #eee;
+    font-size: 14px;
+    line-height: 30px;
+    color: #888;
+    font-weight: bold;
+}
+.home .followees-info .main-content{
+  margin-left:80px;
+}
+.followees-info .main-content a{
+   color:#259;
+   font-weight: 700;
+   font-size: 20px;
+}
+.followees-info .main-content p{
+  margin-top:5px;
+    font-size: 14px;
 }
 </style>
