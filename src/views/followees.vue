@@ -4,7 +4,7 @@
   	<div class="my-profile">
   		<div class="basic-info">
       <div class="edit-profile">
-         <a href="#">编辑资料</a>
+         <a v-link="{ path:'/setting' }">编辑资料</a>
       </div>
       <div class="top">
   			<span>{{ userInfo.username }},</span>
@@ -32,9 +32,9 @@
   	</div>
   	<div class="followees-info">
   		<div v-for='person in userInfo.concerndPersons'>
-  			<img :src="person.userImgUrl">
+  			<img :src="person.userImgUrl" v-link="{params:{userId:person.userId},name:'user'}">
         <div class="main-content">
-  			<a href="#"> {{ person.username }} </a>
+  			<a v-link="{params:{userId:person.userId},name:'user'}"> {{ person.username }} </a>
   			<p>{{ person.userprofile }}</p>
         </div>
           <button type="button" v-if="person.show" @click='change' data-index="{{ $index }}">取消关注</button>

@@ -4,12 +4,12 @@
 		<div class="guess-like-books">
 			 <div class="book"  v-for="book in books" >
                  <div class="book-cover">
-                 	 <a href="#">
+                 	 <a v-link="{ params:{ bookId: book.bookId },name:'book'}">
                  	 	<img :src="book.coverImgUrl">
                  	 </a>
                  </div>
                  <div class="book-info">
-                 	 <a href="#">{{ book.bookName }}</a>
+                 	 <a v-link="{ params:{ bookId: book.bookId },name:'book'}">{{ book.bookName }}</a>
                  	 <div class="score">
                  	      评分：
                  	 	 <bookscore :score="book.bookScore"></bookscore>
@@ -125,6 +125,22 @@ var  guessYouLikeBookData=[
    	  		books:guessYouLikeBookData
    	  	}
    	  },
+      route:{
+          data (){
+            var self=this;
+            $.ajax({
+                url:'..assets/data/youlikebooksdata.json',
+                type:'post',
+                dataType:'json',
+                success:function(data){
+                   //self.books=guessYouLikeBookData;
+                },
+                error:function(){
+                   alert('error');
+                }
+            });
+          }
+      },
    	  components:{
    	  	 'bookscore':require('./staticstars.vue')
    	  }

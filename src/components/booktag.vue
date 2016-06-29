@@ -3,8 +3,8 @@
 		<h2>书籍标签</h2>
 		<div class="booktags">
 			<ul>
-				<li v-for="tag in tags">
-				    <a href="#">{{ tag }}</a></li>
+				<li v-for="tag in tags" track-by="$index">
+				    <a v-link="{ params:{tagname:tag},name:'tag'}">{{ tag }}</a></li>
 			</ul>
 		</div>
 		<h2>更多功能</h2>

@@ -1,37 +1,58 @@
 module.exports = function(router){
 	router.map({
-		'*': {
-            component: require('./views/index.vue')
+		'*': {  // 404 路由
+            name:'home',
+            component:function(resolve){
+                require(['./views/index.vue'],resolve);
+            }
         },
-        '/index': {
-            component: require('./views/index.vue')
+        '/': { //网站首页
+            component:function(resolve){
+                require(['./views/index.vue'],resolve);
+            }
         },
-        '/list': {
-            component: require('./components/list.vue')
+        'setting': { //个人信息设置页
+            name:'setting',
+            component:function(resolve){
+                 require(['./views/setting.vue'],resolve)
+            }
         },
-        '/asi': {
-            component: require('./components/asi.vue')
-        },
-        '/hello': {
-            component: require('./components/hello.vue')
-        },
-        'setting': {
-            component:require('./views/setting.vue')
-        },
-        'result': {
+        '/result': { //搜索结果页
             component:require('./views/searchresult.vue')
         },
-        'tag': {
-            component:require('./views/tagsinfo.vue')
+        '/tag/:tagname': { //标签详情页
+            name:'tag',
+            component:function(resolve){
+                require(['./views/tagsinfo.vue'],resolve)
+            }
+            //require('./views/tagsinfo.vue')
         },
-        'home' :{
-            component:require('./views/home.vue')
+        '/user/:userId' :{ //个人主页
+            name:'user',
+            component:function(resolve){
+                require(['./views/home.vue'],resolve)
+            }
+            //require('./views/home.vue')
         },
-        'home/followees':{
-            component:require('./views/followees.vue')
+        '/user/:userId/followees':{
+            name:'followees',
+            component:function(resolve){
+                require(['./views/followees.vue'],resolve)
+            }
+            //require('./views/followees.vue')
         },
-        'notice' :{
-            component:require('./views/notice.vue')
+        '/notice' :{
+            name:'notice',
+            component:function(resolve){
+                require(['./views/notice.vue'],resolve)
+            }
+            //require('./views/notice.vue')
+        },
+        'book/:bookId' :{
+            name:'book',
+            component:function(resolve){
+                require(['./views/bookitem.vue'],resolve)
+            }
         }
     })
 	

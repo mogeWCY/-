@@ -4,12 +4,12 @@
 <div class="new-books-lists">
    <div class="book"  v-for="book in books" >
    	   <div class="book-cover">
-   	   	   <a href="#">
+   	   	   <a v-link="{ params:{ bookId: book.bookId },name:'book'}">
    	   	      <img :src="book.coverImgUrl" alt=""  data-index="{{ $index }}"  @mouseover='showProfileInfo' @mouseout='hideProfileInfo'>
    	   	   </a>
    	   </div>
    	   <div class="book-info">
-   	   	   	<a href="#" class="book-name" title="{{ book.bookName }}">{{ book.bookName}}</a>
+   	   	   	<a v-link="{ params:{ bookId: book.bookId },name:'book'}" class="book-name" title="{{ book.bookName }}">{{ book.bookName}}</a>
    	   	   	<p class="book-author">{{ book.author}}</p>
    	   </div>
    	   <div class="book-profile" v-show="book.showProfile">
@@ -130,6 +130,23 @@
    	  	 	books:newBooksData
    	  	 }
    	  },
+      route:{
+         data (){
+           var self=this;
+           $.ajax({
+              url:'../assets/data/newbooksdata.json',
+              type:'post',
+              dataType:'json',
+              success:function(data){
+                 self.books=data;
+              },
+              error:function(){
+                 alert('error');
+              }
+        
+           });
+         }
+      },
    	  methods:{
            showProfileInfo:function(event){
            	   var idx=event.target.dataset.index;

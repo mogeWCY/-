@@ -1,6 +1,6 @@
 <template>
 	<header class="nav">
-	    <div class="nav-logo">
+	    <div class="nav-logo" v-link="{ path :'/'}">
 	    	<!-- <a href="#" title="漂流书单">漂流书单</a> -->
 	    </div>
 	    <div class="nav-search">
@@ -8,8 +8,8 @@
 	    	<button type="button">点击</button>
 	    </div>
 		<div class="nav-userInfo">
-		    <a href="#" @click='showRegisterModal'>注册</a>
-		    <a href="#" @click='showLoginModal'>登录</a>
+		    <span @click='showRegisterModal'>注册</span>
+		    <span  @click='showLoginModal'>登录</span>
 		</div>
 	</header>
 			<login v-if="isShowLogin" :isShowLogin='isShowLogin'></login>
@@ -55,6 +55,7 @@ export default {
 		width: 220px;
 		height: 60px;
 		margin-top:-15px;
+		cursor:pointer;
 	}
 	.nav-search{
 		margin-left: 100px;
@@ -84,5 +85,8 @@ export default {
 	div.nav-userInfo{
 		float:right;
 		margin-right: 30px;
+	}
+	.nav-userInfo span{
+		cursor: pointer;
 	}
 </style>

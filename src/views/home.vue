@@ -4,7 +4,7 @@
   	<div class="my-profile">
   		<div class="basic-info">
       <div class="edit-profile">
-         <a href="#">编辑资料</a>
+         <a v-link="{path:'/setting'}">编辑资料</a>
       </div>
       <div class="top">
   			<span>{{ userInfo.username }},</span>
@@ -25,7 +25,7 @@
   		</div>
   		<div class="relation-info">
            <div>
-             <p>关注了<span class="point">{{userInfo.concerndPersons.length }}</span>人</p>
+             <p>关注了<a v-link="{ params:{ userId: userInfo.userId },name:'followees'}"class="point">{{userInfo.concerndPersons.length }}</a>人</p>
              <button type="button">我要关注</button>
              <button type="button">我要换书</button>
            </div>
@@ -34,7 +34,8 @@
   	<div class="my-read-books">
        <h2>我读过的书</h2>
        <div>
-            <a v-for="book in userInfo.myreadbooks" href="#" :title="book.bookName">
+            <a v-for="book in userInfo.myreadbooks" href="#" :title="book.bookName"
+           v-link="{ params:{ bookId: book.bookId },name:'book'}">
                 <img :src="book.bookCoverImgUrl">
             </a>
        </div>
@@ -42,7 +43,8 @@
     <div class="my-want-books">
          <h2>我想读的书</h2>
          <div>
-            <a v-for="book in userInfo.mywantbooks" href="#" :title="book.bookName">
+            <a v-for="book in userInfo.mywantbooks" href="#" :title="book.bookName"
+            v-link="{ params:{ bookId: book.bookId },name:'book'}">
                <img  :src="book.bookCoverImgUrl" >
             </a>
          </div>
@@ -50,7 +52,8 @@
   	<div class="my-books">
         <h2>我拥有的书</h2>
         <div>
-        <a v-for="book in userInfo.mybooks" href="#" :title="book.bookName">
+        <a v-for="book in userInfo.mybooks" href="#" :title="book.bookName"
+        v-link="{ params:{ bookId: book.bookId },name:'book'}">
            <img :src="book.bookCoverImgUrl">
         </a>
         </div>
@@ -67,6 +70,7 @@ export default {
             var  userInfo ={
             userImgUrl:'https://sfault-avatar.b0.upaiyun.com/337/270/337270487-574ecf99584f4_huge256',
             username:'浴火小青春',
+            userId:12345,
             sex:'男',
             qqnumber:2938429494,
             address:['湖北省','武汉市','洪山区','珞瑜路','1037号'],
@@ -123,7 +127,7 @@ export default {
                    bookName:'来信勿拆'
                  }
             ],
-            concerndPersons:['s']
+            concerndPersons:['s','a','c','d']
            };
            return {
              	userInfo:userInfo

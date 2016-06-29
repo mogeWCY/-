@@ -5,13 +5,13 @@
 	    	<div class="book-comment" v-for="comment in comments">
 	    		<div class="user-info">
 	    			 <p class="comment-title">{{ comment.userCommentTitle }}</p>
-	    			 <a class="user-logo" href="#">
+	    			 <a class="user-logo" v-link="{ params:{userId:comment.userId},name:'user'}">
 	    			 	 <img :src="comment.userProfileImgUrl" title="{{ comment.username }}">
 	    			 </a>
-	    			  <a class="user-name" href="#">{{ comment.username }} </a>
+	    			  <a class="user-name" v-link="{ params:{userId:comment.userId},name:'user'}">{{ comment.username }} </a>
 	    			  <span>评论</span>
                       <bookscore :score="comment.bookScore"></bookscore>
-                      <a href="#">{{ comment.bookname}}</a>
+                      <a v-link="{ params:{ bookId: comment.bookId },name:'book'}">{{ comment.bookname}}</a>
 	    		</div>
 	    		<div class="user-comment">
 	    			{{ comment.userCommentText }}

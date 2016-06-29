@@ -6,12 +6,12 @@
 		<div class="guess-like-books">
 			 <div class="book"  v-for="book in books" >
                  <div class="book-cover">
-                 	 <a href="#">
-                 	 	<img :src="book.coverImgUrl">
+                 	 <a v-link="{ params:{ bookId: book.bookId },name:'book'}">
+                 	 	<img :src="book.coverImgUrl" >
                  	 </a>
                  </div>
                  <div class="book-info">
-                 	 <a href="#">{{ book.bookName }}</a>
+                 	 <a v-link="{ params:{ bookId: book.bookId },name:'book'}">{{ book.bookName }}</a>
                  	 <div class="score">
                  	      评分：
                  	 	 <bookscore :score="book.bookScore"></bookscore>
