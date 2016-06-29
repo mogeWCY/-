@@ -172,7 +172,7 @@
 		}
 	}
 </script>
-<style>
+<style scoped>
 	.change-user-info-container{
 		width: 800px;
 		margin: 40px auto;

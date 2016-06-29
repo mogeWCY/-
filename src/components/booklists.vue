@@ -32,7 +32,7 @@
           {
           	bookId:'123',
           	bookName:'活着',
-          	coverImgUrl:'https://img3.doubanio.com/lpic/s28367135.jpg',
+          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
           	author:'余华',
           	press:'华中科技大学出版社',
           	publicationDate:'2015/10/05',
@@ -41,7 +41,7 @@
            {
           	bookId:'123',
           	bookName:'活着',
-          	coverImgUrl:'https://img3.doubanio.com/lpic/s28367135.jpg',
+          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
           	author:'余华',
           	press:'华中ghjgjh科技大学出版社',
           	publicationDate:'2015/10/05',
@@ -50,7 +50,7 @@
           {
           	bookId:'123',
           	bookName:'活着',
-          	coverImgUrl:'https://img3.doubanio.com/lpic/s28367135.jpg',
+          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
           	author:'余华',
           	press:'华中科技大学出版社',
           	publicationDate:'2015/10/05',
@@ -59,7 +59,7 @@
            {
           	bookId:'123',
           	bookName:'活着',
-          	coverImgUrl:'https://img3.doubanio.com/lpic/s28367135.jpg',
+          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
           	author:'余华',
           	press:'华中ghjgjh科技大学出版社',
           	publicationDate:'2015/10/05',
@@ -68,7 +68,7 @@
           {
           	bookId:'123',
           	bookName:'活着',
-          	coverImgUrl:'https://img3.doubanio.com/lpic/s28367135.jpg',
+          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
           	author:'余华',
           	press:'华中科技大学出版社',
           	publicationDate:'2015/10/05',
@@ -77,7 +77,7 @@
            {
           	bookId:'123',
           	bookName:'活着',
-          	coverImgUrl:'https://img3.doubanio.com/lpic/s28367135.jpg',
+          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
           	author:'余华',
           	press:'华中ghjgjh科技大学出版社',
           	publicationDate:'2015/10/05',
@@ -86,7 +86,7 @@
           {
           	bookId:'123',
           	bookName:'活着',
-          	coverImgUrl:'https://img3.doubanio.com/lpic/s28367135.jpg',
+          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
           	author:'余华',
           	press:'华中科技大学出版社',
           	publicationDate:'2015/10/05',
@@ -95,7 +95,7 @@
            {
           	bookId:'123',
           	bookName:'活着',
-          	coverImgUrl:'https://img3.doubanio.com/lpic/s28367135.jpg',
+          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
           	author:'余华',
           	press:'华中ghjgjh科技大学出版社',
           	publicationDate:'2015/10/05',
@@ -104,7 +104,7 @@
           {
           	bookId:'123',
           	bookName:'活着',
-          	coverImgUrl:'https://img3.doubanio.com/lpic/s28367135.jpg',
+          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
           	author:'余华',
           	press:'华中科技大学出版社',
           	publicationDate:'2015/10/05',
@@ -113,7 +113,7 @@
            {
           	bookId:'123',
           	bookName:'活着',
-          	coverImgUrl:'https://img3.doubanio.com/lpic/s28367135.jpg',
+          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
           	author:'余华',
           	press:'华中ghjgjh科技大学出版社',
           	publicationDate:'2015/10/05',
@@ -149,7 +149,7 @@
    	  }
    }
 </script>
-<style>
+<style scoped>
 .container{
 	width: 630px;
 	margin: 0px auto;

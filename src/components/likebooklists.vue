@@ -130,11 +130,11 @@ var  guessYouLikeBookData=[
    	  }
    }
 </script>
-<style>
+<style scoped>
  .guess{
 	 width: 630px;
 	 margin: 20px auto;
- }
+   }
  .guess>h2{
     border-bottom: 1px solid #ddd;
  }

@@ -36,7 +36,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped >
 .container123{
   margin: 0 auto;
 }
@@ -50,6 +50,7 @@ export default {
 .main{
    float: left;
    margin-left:200px;
+   width: 640px;
 }
 .sidebar{
    float: left;

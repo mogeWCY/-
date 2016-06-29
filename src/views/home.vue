@@ -144,12 +144,11 @@ export default {
 		components:{
 			'myheader':require('../components/myheader.vue'),
 			'myfooter':require('../components/myfooter.vue'),
-      'sliderbooks':require('../components/sliderbooks.vue'),
       'mycomments':require('../components/flowbookcomment.vue')
 		}
 	}
 </script>
-<style>
+<style scoped>
 .home{
    width: 80%;
    margin: 20px auto;

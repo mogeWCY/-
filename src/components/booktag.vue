@@ -21,7 +21,7 @@ export default{
 	}
 }
 </script>
-<style>
+<style scoped>
 .booktag-container{
 	width: 400px;
 	height: 700px;

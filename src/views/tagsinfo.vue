@@ -147,7 +147,7 @@ var  guessYouLikeBookData=[
       }
    }
 </script>
-<style>
+<style scoped>
  .guess{
 	 width: 630px;
 	 margin: 20px auto;

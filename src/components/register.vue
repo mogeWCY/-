@@ -110,7 +110,7 @@ export default {
 }
 </script>
 <style src="../assets/css/biu.css"></style>
-<style>
+<style scoped>
 .register{
 	border: 1px solid #cbcbcb;
  	width: 300px;

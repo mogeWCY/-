@@ -1,8 +1,8 @@
 <template>
   <myheader></myheader>
-	<div class="guess">
+	<div class="result">
 		<h2>搜索结果</h2>
-		<div class="guess-like-books">
+		<div class="result-like-books">
 			 <div class="book"  v-for="book in books" >
                  <div class="book-cover">
                  	 <a href="#">
@@ -140,21 +140,21 @@ var  guessYouLikeBookData=[
    	  }
    }
 </script>
-<style>
- .guess{
+<style scoped>
+ .result{
 	 width: 630px;
 	 margin: 20px auto;
  }
- .guess>h2{
+ .result>h2{
     border-bottom: 1px solid #ddd;
  }
- .guess-like-books{
+ .result-like-books{
  	display: flex;
  	display: -webkit-flex;
  	flex-wrap: wrap;
  	justify-content: space-between;
  }
- .guess-like-books .book{
+ .result-like-books .book{
  	width: 100%;
   border-bottom:1px dotted #ddd;
  }
@@ -162,11 +162,11 @@ var  guessYouLikeBookData=[
  	float: left;
  	margin-right: 20px;
  }
- .guess .book-cover img{
+ .result .book-cover img{
  	width: 67px;
 	height: 97px;
  }
- .guess .book-info a{
+ .result .book-info a{
  	color:#3377aa;
  }
  .more-info{

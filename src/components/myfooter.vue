@@ -8,7 +8,7 @@
 		</ul>
 	</footer>
 </template>
-<style>
+<style scoped>
 footer{
 	border-top:1px solid #ddd;
 }

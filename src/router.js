@@ -29,6 +29,9 @@ module.exports = function(router){
         },
         'home/followees':{
             component:require('./views/followees.vue')
+        },
+        'notice' :{
+            component:require('./views/notice.vue')
         }
     })
 	

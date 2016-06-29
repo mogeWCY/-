@@ -37,7 +37,8 @@
   			<a href="#"> {{ person.username }} </a>
   			<p>{{ person.userprofile }}</p>
         </div>
-          <button type="button">取消关注</button>
+          <button type="button" v-if="person.show" @click='change' data-index="{{ $index }}">取消关注</button>
+          <button type="button" v-else  class="show" @click='change' data-index="{{ $index }}">关注</button>
   		</div>
   	</div>
   </div>
@@ -57,30 +58,33 @@ export default {
             concerndPersons:[
                {
                   userId:111111,
-                  userImgUrl:'https://img3.doubanio.com/icon/u28165185-4.jpg',
+                  userImgUrl:'http://h.hiphotos.baidu.com/image/h%3D300/sign=6f12a43cb4315c605c956defbdb0cbe6/a5c27d1ed21b0ef494399077d5c451da80cb3ec1.jpg',
                   username:'Awee',
                   userprofile:'快上车，没时间解释了'
                },
                {
                   userId:222222,
-                  userImgUrl:'https://img3.doubanio.com/icon/u41952166-15.jpg',
+                  userImgUrl:'http://tva3.sinaimg.cn/crop.0.0.279.279.50/005N3SJDgw1eklpq2cgg2j307s07saa1.jpg',
                   username:'林taro',
                   userprofile:'想要做一个写代码很美的人'
                },
                {
                   userId:333333,
-                  userImgUrl:'https://img1.doubanio.com/icon/u28690777-19.jpg',
+                  userImgUrl:'http://tva2.sinaimg.cn/crop.0.0.511.511.50/005SiNxyjw1emjqhw1hk7j30e80e8q33.jpg',
                   username:'空白白白白',
                   userprofile:'一个数据工程师'
                },
                {
                   userId:444444,
-                  userImgUrl:'https://img3.doubanio.com/icon/u3206680-10.jpg',
+                  userImgUrl:'http://tva2.sinaimg.cn/crop.0.0.180.180.50/685cab87jw1e8qgp5bmzyj2050050aa8.jpg',
                   username:'羽小团',
                   userprofile:'处女座，不解释'
                }
             ]
            };
+           userInfo.concerndPersons.forEach(function(item){
+                item.show=true;
+           });
            return {
              	userInfo:userInfo
            }
@@ -99,13 +103,33 @@ export default {
 		},
 		components:{
 			'myheader':require('../components/myheader.vue'),
-			'myfooter':require('../components/myfooter.vue'),
-      'sliderbooks':require('../components/sliderbooks.vue'),
-      'mycomments':require('../components/flowbookcomment.vue')
-		}
+			'myfooter':require('../components/myfooter.vue')
+		},
+    methods:{
+       change:function(event){
+           var idx=event.target.dataset.index;
+           var flag=this.userInfo.concerndPersons[idx].show;
+           this.userInfo.concerndPersons[idx].show=!flag;
+           /*
+            $.ajax({
+               url:'',
+               type:'',
+               data:'' 
+               //判断show的状态，发送本人ID和关注的人ID和这个状态
+               success:function(){
+                  
+               },
+               error:function(){
+  
+               }
+            })
+
+            */
+       }
+    }
 	}
 </script>
-<style>
+<style scoped>
 .home{
    width: 64%;
    margin: 20px auto;
@@ -222,5 +246,9 @@ export default {
 .followees-info .main-content p{
   margin-top:5px;
     font-size: 14px;
+}
+.followees-info button.show{
+  background: #0f88eb;
+  color: #fff;
 }
 </style>

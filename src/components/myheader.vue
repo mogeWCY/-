@@ -38,7 +38,7 @@ export default {
 	}
 }
 </script>
-<style>
+<style scoped>
 	.nav{
 		 margin: 0 auto;
          height: 50px;
