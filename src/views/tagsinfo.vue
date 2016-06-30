@@ -2,6 +2,8 @@
   <myheader></myheader>
 	<div class="guess">
 		<h2>标签：{{ tag }}</h2>
+    <button type="button" class="btn concern" v-if="show" @click="changeConcern">取消关注</button>
+    <button type="button" class="btn no-concern" v-else @click="changeConcern">关注</button>
     <h3>此标签下共有相关书籍 {{ booktotals}} 本</h3>
 		<div class="guess-like-books">
 			 <div class="book"  v-for="book in books" >
@@ -33,7 +35,7 @@
   <myfooter></myfooter>
 </template>
 <script>
-var  guessYouLikeBookData=[
+var  tagBooksData=[
       {
         bookId:'345',
         bookName:'你是我的命运',
@@ -125,15 +127,31 @@ var  guessYouLikeBookData=[
         comment:'每颗真心都有属于自己的倔强柔软'//评论
       }
    ];
+   var userInfo={
+       userId:112222,
+       userName:'浴火小青春',
+       concernTags:["小说","文学","随笔"]
+   };
    export default {
    	  data () {
    	  	return {
-   	  		books:guessYouLikeBookData,
-          tag:'小说'
+   	  		books:tagBooksData,
+          tag:'',
+          userInfo:userInfo,
+          show:''
    	  	}
    	  },
       ready() {
            document.title="搜索结果";
+      },
+      route:{ 
+          data (transition) {
+             var tagname=transition.to.params.tagname;
+             this.tag=tagname;
+             this.show=(this.userInfo.concernTags.indexOf(tagname)!==-1)?true:false;
+             // 获取用户信息,userInfo
+             // 获取标签信息,tagBooksData
+          }
       },
    	  components:{
    	  	 'bookscore':require('../components/staticstars.vue'),
@@ -144,8 +162,16 @@ var  guessYouLikeBookData=[
          booktotals:function(){
             return this.books.length;
          }
+      },
+      methods:{
+        changeConcern:function(){
+           this.show=!this.show;
+           /*
+            ajax 发送取消/添加关注关系
+            */
+        }
       }
-   }
+    }
 </script>
 <style scoped>
  .guess{
@@ -154,6 +180,22 @@ var  guessYouLikeBookData=[
  }
  .guess>h2{
     border-bottom: 1px solid #ddd;
+ }
+ .btn{
+    border: 1px solid #ddd;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 30px;
+    font-weight: bold;
+ }
+ .no-concern{
+   color: #fff;
+   background: #0f88eb;
+ }
+ .concern{
+    background: #eee;
+    color: #888;
  }
  .guess-like-books{
  	display: flex;

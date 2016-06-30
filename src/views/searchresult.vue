@@ -2,6 +2,7 @@
   <myheader></myheader>
 	<div class="result">
 		<h2>搜索结果</h2>
+    <h2>与"{{ keyWord }}"相关的书籍有{{ books.length }}本</h2>
 		<div class="result-like-books">
 			 <div class="book"  v-for="book in books" >
                  <div class="book-cover">
@@ -87,7 +88,7 @@ var  guessYouLikeBookData=[
         bookTags:['日本','小说','外国文学'],
         comment:'每颗真心都有属于自己的倔强柔软'//评论
       },
-            {
+      {
         bookId:'345',
         bookName:'你是我的命运',
         coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
@@ -127,11 +128,18 @@ var  guessYouLikeBookData=[
    export default {
    	  data () {
    	  	return {
-   	  		books:guessYouLikeBookData
+   	  		books:guessYouLikeBookData,
+          keyWord:''
    	  	}
    	  },
       ready() {
            document.title="搜索结果";
+      },
+      route :{
+           data (transition) {
+              var query=transition.to.query,keyWord=query.book;
+              this.keyWord=keyWord;
+           }
       },
    	  components:{
    	  	 'bookscore':require('../components/staticstars.vue'),

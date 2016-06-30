@@ -4,8 +4,8 @@
 	    	<!-- <a href="#" title="漂流书单">漂流书单</a> -->
 	    </div>
 	    <div class="nav-search">
-	    	<input type="text" placeholder="搜索书名">
-	    	<button type="button">点击</button>
+	    	<input type="text" placeholder="搜索书名" v-model="searchKeyWord" @keyup.enter="search">
+	    	<button type="button" v-link="{name:'search',query:{book:searchKeyWord}}">点击</button>
 	    </div>
 		<div class="nav-userInfo">
 		    <span @click='showRegisterModal'>注册</span>
@@ -24,7 +24,8 @@ export default {
 	data () {
          return {
          	 isShowLogin:false,
-         	 isShowRegister:false
+         	 isShowRegister:false,
+         	 searchKeyWord:''
          }
 	},
 	methods:{
@@ -34,6 +35,9 @@ export default {
         },
         showRegisterModal:function(){
              this.isShowRegister=true;
+        },
+        search:function(){
+        	this.$route.router.go('/search?book='+encodeURIComponent(this.searchKeyWord));
         }
 	}
 }

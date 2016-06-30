@@ -17,7 +17,8 @@ module.exports = function(router){
                  require(['./views/setting.vue'],resolve)
             }
         },
-        '/result': { //搜索结果页
+        '/search': { //搜索结果页
+            name:'search',
             component:require('./views/searchresult.vue')
         },
         '/tag/:tagname': { //标签详情页
