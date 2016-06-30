@@ -49,10 +49,15 @@ module.exports = function(router){
             }
             //require('./views/notice.vue')
         },
-        'book/:bookId' :{
+        '/book/:bookId' :{
             name:'book',
             component:function(resolve){
                 require(['./views/bookitem.vue'],resolve)
+            }
+        },
+        '/test' :{
+            component :function(resolve){
+                require(['./views/test.vue'],resolve)
             }
         }
     })

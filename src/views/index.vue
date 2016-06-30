@@ -5,7 +5,7 @@
               <newbookslists></newbookslists>
                <!-- 猜你喜欢 漂流书评-->
            	  <guesslikebookslists></guesslikebookslists>
-              <flowbookcomments></flowbookcomments>
+              <flowbookcomments title="漂流书评"></flowbookcomments>
            </div>
          <div class="sidebar">
     	   <!-- 用户标签-->

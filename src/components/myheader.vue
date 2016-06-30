@@ -37,7 +37,7 @@ export default {
              this.isShowRegister=true;
         },
         search:function(){
-        	this.$route.router.go('/search?book='+encodeURIComponent(this.searchKeyWord));
+        	this.$route.router.go('/search?book='+this.searchKeyWord);
         }
 	}
 }

@@ -1,6 +1,6 @@
 <template>
 	<div class="flow-container">
-		<h2>漂流书评</h2>
+		<h2>{{ title }}</h2>
 	    <div class="flow-book-comment">
 	    	<div class="book-comment" v-for="comment in comments">
 	    		<div class="user-info">
@@ -65,7 +65,8 @@ export default{
 	},
 	components:{
 		"bookscore":require('./staticstars.vue')
-	}
+	},
+	props:['title']
 }
 </script>
 <style scoped>

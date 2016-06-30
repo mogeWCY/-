@@ -59,7 +59,7 @@
         </div>
     </div>
   	<div class="my-comments">
-       <mycomments></mycomments> 
+       <mycomments  title="我的书评"></mycomments> 
     </div>
   </div>
   <myfooter></myfooter>
@@ -133,8 +133,15 @@ export default {
              	userInfo:userInfo
            }
 		},
-		route (){
+		route:{
+           data (transition) {
+               var userId=transition.to.params.userId;
+               // 根据用户ID获取数据
+               // userInfo
+               /*$.ajax({
 
+               });*/
+           }
 		},
 		ready () {
               document.title='个人主页';

@@ -137,8 +137,8 @@ var  guessYouLikeBookData=[
       },
       route :{
            data (transition) {
-              var query=transition.to.query,keyWord=query.book;
-              this.keyWord=keyWord;
+              var query=transition.to.query,key=query.book;
+              this.keyWord=decodeURI(key);
            }
       },
    	  components:{

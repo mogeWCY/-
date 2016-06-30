@@ -41,15 +41,15 @@ export default {
             if(this.validateEmail()){//如果格式正确
                 // ajax 提交，
                 $.ajax({
-                    url:'',
+                    url:'http://172.24.242.2:8080/login',
                     dataType:'json',
                     type:'post',
                     data:{userData:userData},
                     success:function(data){
-                        //获取数据
+                        console.log(data);
                     },
                     error:function(){
-
+                        console.log('hello');
                     },
                     beforeSend:function(){
                     	//发送请求前调用

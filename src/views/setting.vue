@@ -63,7 +63,7 @@
 	   	    	</div>
 	   </form>
 	   <div>
-	   	   <img :src="image">
+	   	   <img :src="imageUrl">
 	   </div>
 	</div>
 	<myfooter></myfooter>
@@ -88,9 +88,14 @@
              return {
                  userInfo:userInfoData,
                  iptType:'password',
-                 image:'',
+                 imageUrl:'',
                  inputPwd:''
            }
+		},
+		route :{
+            data () {
+               //获取已登录用户ID。如果未登陆，页面跳转主页
+            }
 		},
 		ready (){
              var  sexRadioBtns=document.getElementsByName('sex');

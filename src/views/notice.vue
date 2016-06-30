@@ -3,11 +3,11 @@
 <div class="notice">
    <h2>系统消息</h2>
    <div v-for="notice in notices" class="notice-item">
-   	   <a href="#">{{ notice.userName }}</a>
+   	   <a v-link="{params:{userId:notice.noticeId},name:'user'}">{{ notice.userName }}</a>
    	   <span>请求获取你的联系方式与您换书</span>
        <span>发送于{{ notice.time }}</span>
-   	   <button type='button' class="btn">同意</button>
-   	   <button type="button" class="btn">拒绝</button>
+   	   <button type='button' class="btn" @click="agree" data-time="{{notice.time}}">同意</button>
+   	   <button type="button" class="btn" @click="refuse" data-time="{{notice.time}}">拒绝</button>
    </div>
 </div>
 <myfooter></myfooter>
@@ -15,26 +15,64 @@
 <script>
 var notices=[
    {
+     noticeId:122333,
      userId:122222,
      userName:'小雨',
      time:'2016/6/28 05:30'
    },
    {
+    noticeId:122233,
    	userId:122223,
    	userName:'小明',
    	time:'2016/6/28 10:20'
    }
 ];
+import biu from 'biu.js'
 export  default{
 	 data () {
          return {
          	notices:notices
          }
 	 },
-     components:{
+   components:{
      	'myheader':require('../components/myheader.vue'),
      	'myfooter':require('../components/myfooter.vue')
+   },
+   methods:{
+     agree:function(event){
+         biu('hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world');//他人的信息
+         var noticeTime=event.target.dataset.time;
+         this.delNoticeByTime(noticeTime);
+     },
+     refuse:function(evnet){
+         var  noticeTime=event.target.dataset.time;
+         this.delNoticeByTime(noticeTime);
+     },
+     delNoticeByTime:function(noticeTime){
+        var noticeId;
+         notices.forEach(function(item){
+             if(noticeTime===item.time){
+                  noticeId=item.noticeId;
+                  return -1;
+             }
+         });
+        /*   把noticeID发送过去
+         $.ajax({
+            url:'',
+            type:'post',
+            data:{'noticeId':noticeId},
+            success:function(){
+             
+            },
+            error:function(){
+               biu('删除失败，请重新删除',{
+                 type:'warning'
+               })
+            }
+         });
+         */
      }
+   }
 }
 </script>
 <style scoped>
