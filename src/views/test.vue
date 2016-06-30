@@ -10,7 +10,7 @@
 		 methods:{
              getData:function(){
              	  $.ajax({
-                    url:'http://172.24.242.2:8080/login',
+                    url:'/login',
                     dataType:'text',
                     type:'post',
                     data:{userData:userData},
