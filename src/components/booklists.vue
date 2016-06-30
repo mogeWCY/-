@@ -188,6 +188,7 @@
 .book{
 	width: 106px;
 	margin-top:20px;
+  position: relative;
 }
 .book-info{
 }
@@ -199,7 +200,7 @@
 	margin-bottom: 0px;
 }
 .book-profile{
-	position: fixed;
+	position: absolute;
 	z-index: 1;
 	background: #f6f6f1;
     border-radius:5px;

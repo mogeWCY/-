@@ -144,6 +144,8 @@ export default {
               }else{
                  sexIcons[0].style.display="none";
               }
+              console.log(this.$children);
+              console.log('hello');
 		},
 		components:{
 			'myheader':require('../components/myheader.vue'),

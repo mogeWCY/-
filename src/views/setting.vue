@@ -76,7 +76,7 @@
     	 username:'浴火小青春',
     	 password:'18237812724',
     	 newpassword:'',
-    	 sex:'女',
+    	 sex:'男',
     	 qqnumber:'',
     	 address:'',
     	 userprofile:'',
