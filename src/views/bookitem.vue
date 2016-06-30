@@ -20,11 +20,15 @@
   </div>
   <div class="profile">
         <h2>内容简介</h2>
-        <p v-for="s in sentenceArr">{{ s }}</p>
+        <p v-for="s in bookSentenceArr">{{ s }}</p>
         <h2>作者简介</h2>
-        <p>{{bookInfo.authorProfile}}</p>
+        <p v-for="s in authorSentenceArr">{{ s }}</p>
 	</div>
+  <div class="comment">
+  <h2>热门评价</h2>
+  </div>
 </div>
+
 <myfooter></myfooter>
 </template>
 <script>
@@ -63,8 +67,11 @@ export default {
     'bookscore':require('../components/staticstars.vue')
 	 },
    computed:{
-     sentenceArr:function(){
+     bookSentenceArr:function(){
        return this.bookInfo.bookProfile.split('。');
+     },
+     authorSentenceArr:function(){
+       return  this.bookInfo.authorProfile.split('。');
      }
    },
    methods:{
@@ -78,9 +85,15 @@ export default {
    margin: 40px auto;
    border:1px solid #ddd;
    border-radius:10px;
+   padding-left: 30px;
+   padding-right: 30px;
+}
+.container h2{
+   border-bottom: 1px solid #ddd;
+   padding-bottom:20px;
 }
 .book-name{
-  padding-left: 50px;
+  /*padding-left: 50px;*/
 }
 .book-info{
   border:1px solid #ddd;
@@ -125,6 +138,9 @@ export default {
 .book-judge .gray{
   background: rgba(213,218,222,0.84);
   cursor:auto;
+}
+.profile {
+   /*padding-left:30px;*/
 }
 .profile p{
    text-indent: 30px;
