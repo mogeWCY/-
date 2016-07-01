@@ -59,6 +59,11 @@ module.exports = function(router){
             component :function(resolve){
                 require(['./views/test.vue'],resolve)
             }
+        },
+        '/edit':{
+            component:function(resolve){
+                 require(['./views/commenteditor.vue'],resolve)
+            }
         }
     })
 	
