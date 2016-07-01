@@ -11,11 +11,12 @@
 		    <p>出版社：{{ bookInfo.press }}</p>
 		    <p>出版日期：{{ bookInfo.publicationDate }}</p>
         <p>综合评价:<bookscore :score="bookInfo.bookScore"></bookscore>{{ bookInfo.bookScore }}分</p>
+        <p class="tags">所属标签:<span v-link="{ params:{tagname:tag},name:'tag'}" v-for="tag in bookInfo.tags" track-by="$index">{{ tag }}</span></p>
     </div>
-    <div class="book-judge">
-        <button type="button" class=" btn gray">想读</button>
-        <button type="button" class="btn">读过</button>
-        <button type="button" class="btn">拥有</button>
+    <div class="book-judge" @click="judge">
+        <button type="button" :class="judgeBtnClass.wantBtn" data-type="want">想读</button>
+        <button type="button" :class="judgeBtnClass.readBtn" data-type="read">读过</button>
+        <button type="button" :class="judgeBtnClass.haveBtn" data-type="have">拥有</button>
     </div>
   </div>
   <div class="profile">
@@ -32,6 +33,7 @@
 <myfooter></myfooter>
 </template>
 <script>
+import biu from 'biu.js'
 export default {
 	 data () {
 	 	 var bookInfo={
@@ -49,7 +51,21 @@ export default {
          return {
          	name:'wcy',
          	bookId:'',
-         	bookInfo:bookInfo
+         	bookInfo:bookInfo,
+          judgeBtnClass:{
+             wantBtn:{
+               'btn':true,
+               'gray':false
+             },
+             readBtn:{
+               'btn':true,
+               'gray':false
+             },
+             haveBtn:{
+               'btn':true,
+               'gray':false
+             }
+          }
          }
 	 },
 	 ready (){
@@ -59,6 +75,9 @@ export default {
 	 	data (transition) {
              var id=transition.to.params.bookId;
              this.bookId=id;
+             // 获取书的详情介绍，以及书对应的评论
+             // 获取用户ID，
+             // 发送此本书的状态，检查是否在想读/拥有/读过的序列中
 	 	}
 	 },
 	 components:{
@@ -75,7 +94,52 @@ export default {
      }
    },
    methods:{
-     
+      judge:function(event){
+         if(event.target.tagName.toLowerCase()=='button'){
+             var type=event.target.dataset.type;
+             // 验证登陆
+             // sendData
+             switch (type) {
+                case 'want' :this.wantAction();break;
+                case 'read' :this.readAction();break;
+                case 'have' :this.haveAction();break;
+                default:console.log('hello world');
+             }
+         }
+      },
+      wantAction:function(){
+          //获取userId , bookId
+          //ajax 发送数据
+          if(this.judgeBtnClass.wantBtn['gray']){
+            return false;
+          }
+          this.judgeBtnClass.wantBtn['gray']=true;
+          var jdUrl="http://search.jd.com/Search?keyword="+this.bookInfo.bookName+"&enc=utf-8&wq="+
+          this.bookInfo.bookName+"&pvid=1pdif3qi.dk6wya";
+          var template="那快来京东看看有木有<a style='font-size:22px;color:red' target='_blank' href='" +jdUrl+ "'>"+this.bookInfo.bookName+"</a>吧";
+
+          biu(template,{
+            type:'success'
+          });
+      },
+      readAction:function(){
+         if(this.judgeBtnClass.readBtn['gray']){
+           return false;
+         }
+         this.judgeBtnClass.readBtn['gray']=true;
+         biu('既然读过了，快点留下你的评价吧',{
+              type:'success'
+         });
+      },
+      haveAction:function(){
+         if(this.judgeBtnClass.haveBtn['gray']){
+           return false;
+         }
+         this.judgeBtnClass.haveBtn['gray']=true;
+         biu('好的，知道你有这本书了',{
+           type:'success'
+         })
+      }
    }
 }
 </script>
@@ -112,6 +176,13 @@ export default {
   content: "";
   display: block;
   clear: both;
+}
+.book-info .tags span{
+    cursor:pointer;
+    padding: 5px 10px;
+    font-size: 12px;
+    background: #f5f5f5;
+    margin: 5px;
 }
 .book-judge{
   float:left;

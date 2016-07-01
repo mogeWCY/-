@@ -1,0 +1,46 @@
+{"1":
+   {"content":"涓嶇煡閬撲綘璇寸殑浠€涔 ",
+   "id":1,
+   "time":"2016-06-22",
+   "userName":"hust",
+   "son":{
+         "1":{
+             "content":"閭ｅ摝鍝﹀摝鍝﹀摝鍝 ",
+             "id":3,
+             "time":"2016-06-23",
+             "userName":"cra",
+             "son":{
+                   "1":{
+                       "content":"灞佸晩",
+                       "id":5,
+                       "time":"2016-06-24",
+                       "userName":"ss",
+                       "son":{},
+                       "pid":3
+                       }
+                   },
+                   "pid":1
+            },
+            "2":{
+             "content":"閭ｅ摝鍝﹀摝鍝﹀摝鍝 ",
+             "id":3,
+             "time":"2016-06-23",
+             "userName":"rrrr",
+             "son":{
+                   "1":{
+                       "content":"灞佸晩",
+                       "id":5,
+                       "time":"2016-06-24",
+                       "userName":"ss",
+                       "son":{},
+                       "pid":3
+                       }
+                   },
+                   "pid":1
+            }
+         },
+        "pid":0
+    },
+    "2":{"content":"杩欐湰涔﹁繕绠楀彲浠 ","id":2,"time":"2016-06-22","userName":"ssss","son":{"1":{"content":"杩樿","id":4,"time":"2016-06-23","userName":"pang","son":{},"pid":2}},"pid":0}}
+
+

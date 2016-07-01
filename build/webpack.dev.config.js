@@ -10,18 +10,14 @@ config.devtool = '#source-map'
         }
 }*/
 config.devServer={
-	proxyTable:{
-		'/login':{
+	/*proxyTable:{
+		'*':{
 			target:'http://172.24.242.2:8080',
 			changeOrigin:true
-		},
-		pathRewrite: {
-          '^/login': ''
-        }
-	}
+		}
+	}*/
 }
 // $.ajax 里面直接写
 // url:'/login'
 // 
 module.exports = config
-
