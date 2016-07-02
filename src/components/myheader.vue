@@ -23,7 +23,7 @@
 		    </div>
 		</div>
 	</header>
-			<login v-if="isShowLogin" :isShowLogin='isShowLogin'></login>
+			<login v-if="isShowLogin" :isShowLogin.sync='isShowLogin'></login>
 			<register v-if="isShowRegister" :isShowRegister='isShowRegister'></register>
 </template>
 <script>
@@ -47,8 +47,9 @@ export default {
 	},
 	methods:{
         showLoginModal:function(){
-             this.isShowLogin=true;
-             console.log(this.isShow);
+             /*this.isShowLogin=true;
+             console.log(this.isShow);*/
+           this.$route.router.go('/login?redirect='+encodeURIComponent(this.$route.path));
         },
         showRegisterModal:function(){
              this.isShowRegister=true;
@@ -56,6 +57,12 @@ export default {
         search:function(){
         	this.$route.router.go('/search?book='+this.searchKeyWord);
         }
+	},
+	watch:{
+		'hasLogin':function(){
+			 //  登录状态改变，再次请求数据
+			 this.$parent.login=true;
+		}
 	}
 }
 </script>

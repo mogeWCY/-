@@ -15,6 +15,7 @@
     <div class="footer">
     <myfooter></myfooter>
     </div>
+    <button type="button" @click="test">test</button>
 </template>
 <script>
 //import  myheader from 'myheader.vue'
@@ -29,10 +30,16 @@ export default {
 	},
 	data () {
 		return {
-			msg:'thank you'
+			msg:'thank you',
+      login:false
 		}
-	}
-
+	},
+  watch:{
+    'login':function(){
+       //  登录状态改变，再次请求数据
+        alert('hello');
+    }
+  }
 }
 </script>
 

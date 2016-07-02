@@ -64,6 +64,16 @@ module.exports = function(router){
             component:function(resolve){
                  require(['./views/commenteditor.vue'],resolve)
             }
+        },
+        '/login':{
+            component:function(resolve){
+                 require(['./views/login.vue'],resolve)
+            }
+        },
+        '/register':{
+           component:function(resolve){
+                require(['./views/register.vue'],resolve)
+           }
         }
     })
 	

@@ -2,7 +2,7 @@
 	<div class="login">
 	    <div class="login-title">
 	    	<h2>登录漂流书单</h2>
-            <i class="fa fa-times" aria-hidden="true" @click='closeDialog'></i>
+            <!--<i class="fa fa-times" aria-hidden="true" @click='closeDialog'></i>-->
 	    </div>
 		<div class="login-email">
 			<input type="email" name='useremail' placeholder="邮箱" class="login-input" v-model="useremail">
@@ -25,6 +25,9 @@
 import  biu  from 'biu.js'
 import  $  from  'jquery'
 export default {
+  ready(){
+      document.title="登录漂流书单";
+  },
 	data () {
 		return {
            useremail:' ',
@@ -39,10 +42,14 @@ export default {
 				 useremail:this.useremail,
 				 password:this.password
 			};
+      var self=this;
       if(this.validateEmail()){//如果格式正确
                 // ajax 提交，
-                this.changeLoginStatus();
-                /*$.ajax({
+                //this.changeLoginStatus();
+                 var redirect = decodeURIComponent(self.$route.query.redirect || '/');
+                   self.$route.router.go(redirect);
+                /*
+                 */$.ajax({
                     url:'http://172.24.242.2:8080/login',
                     dataType:'json',
                     type:'post',
@@ -52,7 +59,8 @@ export default {
                            //  记录username/email
                            this.changeLoginStatus();
                            /*
-                             
+                   var redirect = decodeURIComponent(self.$route.query.redirect || '/');
+                   self.$route.router.go(redirect);
                             */
                        /* }else{
                            biu("输入的账号或密码有误，请重新输入",{
@@ -70,15 +78,12 @@ export default {
             }else{
                 //
             }
-		},
+		   },
         validate:function(){
         	if(this.validateEmail()){
         		return true;
         	}
         	return false;
-        },
-        closeDialog:function(){
-           this.$parent.isShowLogin=false;
         },
         showPwd:function(){
            if(this.iptType=='text'){
@@ -99,11 +104,6 @@ export default {
                  type:'warning'
              });
                return false;
-        },
-        changeLoginStatus:function(){
-                // 改变父组件中的登录状态
-                this.$parent.hasLogin=true;
-                this.$parent.isShowLogin=false;
         }
 	},
 	props:['isShowLogin']
@@ -182,7 +182,9 @@ export default {
   	left: 0px;
  	width: 100%;
  	height: 100%;
- 	background: rgba(31,31,31,0.12);
+ 	/*background: rgba(31,31,31,0.12);*/
+  background: url('https://pixabay.com/static/uploads/photo/2015/05/20/06/25/hong-kong-774869_960_720.jpg');
+  background-size: cover;
  	z-index: 1;
  }
 </style>
