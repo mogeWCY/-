@@ -1,5 +1,4 @@
 <template>
-<myheader></myheader>
    <div class="editor">
         <h2>快来发表评价吧</h2>
    	  <div class="title">
@@ -25,15 +24,10 @@
            <button type="button" @click="sendComment">发布</button>
         </div>
    </div>
-<myfooter></myfooter>
 </template>
 <script>
 import biu from 'biu.js'
 	 export default{
-       components:{
-         'myheader':require("../components/myheader.vue"),
-         'myfooter':require("../components/myfooter.vue")
-       },
        data () {
           return {
              title:'',
@@ -86,9 +80,7 @@ import biu from 'biu.js'
 </script>
 <style scoped>
 .editor{
-   width: 80%;
    margin:40px auto;
-   border:1px solid #ddd;
 }
 .title,.store,.content{
    margin-top: 20px;
@@ -120,7 +112,6 @@ import biu from 'biu.js'
 }
 .content  .remain-text{
    position: absolute;
-   border:1px solid red;
    top:0px;
    left:400px;
 }

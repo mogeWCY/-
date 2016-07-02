@@ -29,7 +29,8 @@ export default {
 		return {
            useremail:' ',
            password: '',
-           iptType:'password'
+           iptType:'password',
+           hasLogin:false
 		}
 	},
 	methods:{
@@ -38,15 +39,22 @@ export default {
 				 useremail:this.useremail,
 				 password:this.password
 			};
-            if(this.validateEmail()){//如果格式正确
+      if(this.validateEmail()){//如果格式正确
                 // ajax 提交，
-                $.ajax({
+                /*$.ajax({
                     url:'http://172.24.242.2:8080/login',
                     dataType:'json',
                     type:'post',
                     data:{userData:userData},
                     success:function(data){
                         console.log(data);
+                        if(true){
+                           //  记录username/email
+                        }else{
+                           biu("输入的账号或密码有误，请重新输入",{
+                             type:'warning'
+                           });
+                        }
                     },
                     error:function(){
                         console.log('hello');
@@ -54,7 +62,10 @@ export default {
                     beforeSend:function(){
                     	//发送请求前调用
                     }
-                });
+                });*/
+                // 改变父组件中的登录状态
+                this.$parent.hasLogin=true;
+                this.$parent.isShowLogin=false;
                 if('hello'){//验证账户，正确。做出相应的跳转
                     biu('success');
                 }else{//账户错误

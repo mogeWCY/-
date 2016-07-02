@@ -8,8 +8,19 @@
 	    	<button type="button" v-link="{name:'search',query:{book:searchKeyWord}}">点击</button>
 	    </div>
 		<div class="nav-userInfo">
-		    <span @click='showRegisterModal'>注册</span>
-		    <span  @click='showLoginModal'>登录</span>
+		    <span @click='showRegisterModal' v-if="!hasLogin">注册</span>
+		    <span  @click='showLoginModal' v-if="!hasLogin">登录</span>
+		    <div class="dropdown" v-if="hasLogin">
+		    <div>
+		    	  <img :src="userInfo.imgUrl">
+		          <span>{{userInfo.username}}</span>
+		    </div>
+		    <ul>
+		    	<li><a v-link="{params:{userId:userInfo.userId},name:'user'}">个人主页</a></li>
+		    	<li><a v-link="{path:'/notice',name:'notice'}">系统通知</a></li>
+		    	<li><a href="#">退出登录</a></li>
+		    </ul>
+		    </div>
 		</div>
 	</header>
 			<login v-if="isShowLogin" :isShowLogin='isShowLogin'></login>
@@ -25,7 +36,13 @@ export default {
          return {
          	 isShowLogin:false,
          	 isShowRegister:false,
-         	 searchKeyWord:''
+         	 searchKeyWord:'',
+         	 userInfo:{
+         	 	imgUrl:'http://ww3.sinaimg.cn/large/e5f5244ajw1f5fntrodyij200p00p0gk.jpg',
+         	 	username:'wcdfdfdfy',
+         	 	userId:122222
+         	 },
+         	 hasLogin:false
          }
 	},
 	methods:{
@@ -84,13 +101,40 @@ export default {
 		width: 32px;
 		height: 36px;
 		cursor: pointer;
-		border: 1px solid;
 	}
 	div.nav-userInfo{
 		float:right;
-		margin-right: 30px;
+		margin-right: 70px;
+	}
+	.nav-userInfo .dropdown{
+	}
+	.nav-userInfo .dropdown>ul{
+        display: none;
+	}
+	.nav-userInfo .dropdown:hover >ul{
+        display: block;
 	}
 	.nav-userInfo span{
 		cursor: pointer;
+	}
+	.nav-userInfo  ul{
+		list-style-type:none;
+		padding:0px;
+		margin-top:20px;
+		font-size: 14px;
+	}
+	.nav-userInfo ul li{
+		line-height: 20px;
+		border-bottom:1px solid #ddd;
+		padding:12px 0px;
+		background: #f6f6f1;
+		text-align: center;
+		cursor: pointer;
+	}
+	.nav-userInfo ul li:last-child{
+		border-radius: 5px;
+	}
+	.nav-userInfo ul li:hover{
+		background:rgba(246,241,246,0.43);
 	}
 </style>

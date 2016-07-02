@@ -27,9 +27,10 @@
 	</div>
   <div class="comment">
   <h2>热门评价</h2>
-  <div>
+       <div>
      
-  </div>
+       </div>
+       <commenteditor></commenteditor>
   </div>
 </div>
 
@@ -89,7 +90,8 @@ export default {
 	 components:{
 	 	'myheader':require('../components/myheader.vue'),
 	 	'myfooter':require('../components/myfooter.vue'),
-    'bookscore':require('../components/staticstars.vue')
+    'bookscore':require('../components/staticstars.vue'),
+    'commenteditor':require('../components/commenteditor.vue')
 	 },
    computed:{
      bookSentenceArr:function(){
