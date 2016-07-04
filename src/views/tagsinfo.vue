@@ -135,22 +135,41 @@ var  tagBooksData=[
    export default {
    	  data () {
    	  	return {
-   	  		books:tagBooksData,
+   	  		books:'',
           tag:'',
           userInfo:userInfo,
           show:''
    	  	}
    	  },
       ready() {
-           document.title="搜索结果";
+           document.title="标签详情";
       },
       route:{ 
           data (transition) {
              var tagname=transition.to.params.tagname;
              this.tag=tagname;
+             var obj={
+                 'tagName':this.tag
+             };
              this.show=(this.userInfo.concernTags.indexOf(tagname)!==-1)?true:false;
              // 获取用户信息,userInfo
              // 获取标签信息,tagBooksData
+             var self=this;
+             $.ajax({
+                  url:'http://172.21.185.3:8080/Test/labelsearch',
+                  type:'post',
+                  data:{
+                     tagName:JSON.stringify(obj)
+                  },
+                  success:function(data){
+                     //console.log("标签详情");
+                     self.books=data;
+                     //console.log(data);
+                  },
+                  error:function(){
+                     console.log("标签详情出错");
+                  }
+             })
           }
       },
    	  components:{

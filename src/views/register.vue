@@ -32,47 +32,48 @@ export default {
            iptType:'password'
 		}
 	},
+  ready (){
+        document.title="加入漂流书单";
+  },
 	methods:{
 		sendInfo:function(){
-			var userData={
-					username:this.username,
-					useremail:this.useremail,
-					password:this.password
-			};
-            if(this.validate()){//如果格式正确
+			       var userData={
+					           username:this.username,
+					           useremail:this.useremail,
+					           password:this.password
+			             };
+             var self=this;
+             if(this.validate()){//如果格式正确
                 // ajax 提交，
-                $.ajax({
-                	url:'',
-                	dataType:'json',
-                	data:{userData:userData},
-                	success:function(data){
-
-                	},
-                	error:function(){
-
-                	},
-                	beforeSend:function(){
-
-                	}
-                });
-                if('hello'){//验证账户，正确。做出相应的跳转
-                    biu('success');
-                }else{//账户错误
-                	biu('账号或密码错误',{
-                        type:'warning'
-                	});
-                }
-            }else{
-                // 
+                     $.ajax({
+                	       url:'',
+                	       dataType:'json',
+                	       data:{userData:userData},
+                	       success:function(data){
+                                    if(data.status){
+                                           localStorage.username=self.username;
+                                           localStorage.userId=data.userId;
+                                           self.$route.route.go('/setting');
+                                           
+                                    }else{
+                                          biu('系统问题，请重新刷新页面注册',{
+                                              type:'warning'
+                                          });
+                                    }
+                	               },
+                	       error:function(){
+                            
+                	       }
+                    });
             }
 		},
-        validate:function(){
+    validate:function(){
         	if(this.validateEmail()&&this.validatePwd()){
         		return true;
         	}
         	return false;
         },
-        showPwd:function(){
+    showPwd:function(){
            if(this.iptType=='text'){
                 this.iptType='password';
                 return false;
@@ -82,7 +83,7 @@ export default {
                 return false;
            }
         },
-        validateEmail:function(){
+    validateEmail:function(){
         	var filter  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         	if (filter.test(this.useremail)) {// 邮箱格式正确
                    return true;
@@ -91,8 +92,8 @@ export default {
                  type:'warning'
              });
                return false;
-        },
-        validatePwd:function(){
+    },
+    validatePwd:function(){
         	var len=this.password.length;
         	if(len<6||len>16){
                 biu('密码长度不符合要求，请重新设定',{
@@ -101,9 +102,8 @@ export default {
                 return false;
         	}
         	return true;
-        }
-	},
-	props:['isShowRegister']
+    }
+	}
 }
 </script>
 <style src="../assets/css/biu.css"></style>

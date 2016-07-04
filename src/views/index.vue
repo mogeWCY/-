@@ -15,7 +15,6 @@
     <div class="footer">
     <myfooter></myfooter>
     </div>
-    <button type="button" @click="test">test</button>
 </template>
 <script>
 //import  myheader from 'myheader.vue'
@@ -34,11 +33,8 @@ export default {
       login:false
 		}
 	},
-  watch:{
-    'login':function(){
-       //  登录状态改变，再次请求数据
-        alert('hello');
-    }
+  ready (){
+    document.title="首页";
   }
 }
 </script>
@@ -63,6 +59,7 @@ export default {
    float: left;
    margin-left: 50px;
    margin-top:50px;
+   z-index: 0;
 }
 .footer{
  margin: 0 auto;

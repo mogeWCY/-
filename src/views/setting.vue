@@ -1,7 +1,7 @@
 <template>
 	<myheader></myheader>
 	<div class="change-user-info-container">
-	   <form action="" method="post" @submit.prevent='validate'>
+	   <form action="" method="post" @submit.prevent='changeInfo'>
 	            <div>
 	   	    	<label for="username">昵称</label>
 	   	    	<input type="text" name="username" v-model="userInfo.username">
@@ -67,7 +67,6 @@
 	   </div>
 	</div>
 	<myfooter></myfooter>
-	<div id="d"></div>
 </template>
 <script>
     import  biu from 'biu.js'
@@ -98,6 +97,7 @@
             }
 		},
 		ready (){
+			 document.title="个人信息设置";
              var  sexRadioBtns=document.getElementsByName('sex');
              if(sexRadioBtns[0].value===this.userInfo.sex){
              	sexRadioBtns[0].checked=true;
@@ -172,7 +172,18 @@
                     });
                    return false;
         	    }
-           
+                return true;
+             },
+             changeInfo:function(){
+             	if(this.validate()){
+                    this.changeInfo();
+
+             	}
+             },
+             cacheInfo:function(){
+             	localStorage.username=this.userInfo.username;
+             	localStorage.userImgUrl=this.userInfo.userImgUrl;
+             	//localStorage.userId='';ss
              }
 		}
 	}

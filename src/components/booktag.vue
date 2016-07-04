@@ -16,8 +16,34 @@
 export default{
 	data () {
 		return {
-			tags:allTagsData
+			tags:''
 		}
+	},
+	ready (){
+       //this.tags=allTagsData;
+       var index={
+       	 userId:localStorage.userId||'',
+       	 index:3
+       };
+       var self=this;
+       setTimeout(function(){
+                    $.ajax({
+              url:'http://172.21.185.3:8080/Test/mainpage',
+              type:'post',
+              dataType:'json',
+              data:{
+              	 index:JSON.stringify(index)
+              },
+              success:function(data){
+              	   //console.log('标签');
+              	   //console.log(data[0].alllabel);
+                   self.tags=data[0].alllabel;
+              },
+              error:function(){
+                   console.log('书籍标签error');
+              }
+       			});
+       },4000);
 	}
 }
 </script>
@@ -25,7 +51,7 @@ export default{
 .booktag-container{
 	width: 400px;
 	height: 700px;
-	float: right;
+	z-index: 0;
 }
 .booktag-container h2{
 	border-bottom:1px solid #ddd;

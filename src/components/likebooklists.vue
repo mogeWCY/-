@@ -122,24 +122,37 @@ var  guessYouLikeBookData=[
    export default {
    	  data () {
    	  	return {
-   	  		books:guessYouLikeBookData
+   	  		books:''
    	  	}
    	  },
-      route:{
-          data (){
+      ready () {
+        var index={
+               userId:localStorage.userId||'',
+               index:2
+            };
             var self=this;
-            $.ajax({
-                url:'..assets/data/youlikebooksdata.json',
+            setTimeout(function(){
+                             $.ajax({
+                url:'http://172.21.185.3:8080/Test/mainpage',
                 type:'post',
                 dataType:'json',
+                data:{
+                    index:JSON.stringify(index)
+                },
                 success:function(data){
-                   //self.books=guessYouLikeBookData;
+                   self.books=data[0].guesslike;
+                  // console.log("猜你喜欢");
+                  // console.log(data);
                 },
                 error:function(){
-                   alert('error');
+                   console.log('猜你喜欢error');
                 }
             });
-          }
+            },2000);
+      },
+      route:{
+          data (){
+            }
       },
    	  components:{
    	  	 'bookscore':require('./staticstars.vue')

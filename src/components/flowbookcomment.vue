@@ -26,7 +26,7 @@ var flowBookCommentData=[
      {
        bookId:6672772,
        userId:3433453,
-       username:'浴火小青春',
+       username:'小明',
        userCommentTitle:'走了好久终于走到今天',
        userCommentText:'怎么看也像是枝裕和作品里最治愈最轻松的一部了，可是，混蛋！为什么航一告诉弟弟：“可能，比起家人，我还是选择了世界吧”，会让人那么伤感？最后航一的奇迹应该实现了吧，只是他还不知道自己已经渐渐长大了',
        bookname:'奇迹',
@@ -36,8 +36,8 @@ var flowBookCommentData=[
      },
      {
        bookId:6672772,
-       userId:3433453,
-       username:'浴火小青春',
+       userId:234212,
+       username:'小红',
        userCommentTitle:'走了好久终于走到今天',
        userCommentText:'怎么看也像是枝裕和作品里最治愈最轻松的一部了，可是，混蛋！为什么航一告诉弟弟：“可能，比起家人，我还是选择了世界吧”，会让人那么伤感？最后航一的奇迹应该实现了吧，只是他还不知道自己已经渐渐长大了',
        bookname:'奇迹',
@@ -47,8 +47,8 @@ var flowBookCommentData=[
      },
      {
        bookId:6672772,
-       userId:3433453,
-       username:'浴火小青春',
+       userId:232332,
+       username:'杰克',
        userCommentTitle:'走了好久终于走到今天',
        userCommentText:'怎么看也像是枝裕和作品里最治愈最轻松的一部了，可是，混蛋！为什么航一告诉弟弟：“可能，比起家人，我还是选择了世界吧”，会让人那么伤感？最后航一的奇迹应该实现了吧，只是他还不知道自己已经渐渐长大了',
        bookname:'奇迹',
@@ -58,10 +58,15 @@ var flowBookCommentData=[
      }
 ];
 export default{
-	data () {
+	data () { 
 		return {
 			comments:flowBookCommentData
 		}
+	},
+	ready (){
+       var commentInfo={
+       	  
+       }
 	},
 	components:{
 		"bookscore":require('./staticstars.vue')

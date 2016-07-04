@@ -18,7 +18,7 @@
 		    <ul>
 		    	<li><a v-link="{params:{userId:userInfo.userId},name:'user'}">个人主页</a></li>
 		    	<li><a v-link="{path:'/notice',name:'notice'}">系统通知</a></li>
-		    	<li><a href="#">退出登录</a></li>
+		    	<li><a href="#" @click.prevent="logout">退出登录</a></li>
 		    </ul>
 		    </div>
 		</div>
@@ -39,16 +39,21 @@ export default {
          	 searchKeyWord:'',
          	 userInfo:{
          	 	imgUrl:'http://ww3.sinaimg.cn/large/e5f5244ajw1f5fntrodyij200p00p0gk.jpg',
-         	 	username:'wcdfdfdfy',
-         	 	userId:122222
-         	 },
-         	 hasLogin:false
+         	 	username:localStorage.username,
+         	 	userId:localStorage.userId
+         	 }
          }
+	},
+	computed:{
+        'hasLogin':function(){
+        	if(localStorage.userId){
+        		 return true;
+        	}
+        	return false;
+        }
 	},
 	methods:{
         showLoginModal:function(){
-             /*this.isShowLogin=true;
-             console.log(this.isShow);*/
            this.$route.router.go('/login?redirect='+encodeURIComponent(this.$route.path));
         },
         showRegisterModal:function(){
@@ -56,13 +61,11 @@ export default {
         },
         search:function(){
         	this.$route.router.go('/search?book='+this.searchKeyWord);
+        },
+        logout:function(){
+        	localStorage.clear();
+        	this.$route.router.go('/login');
         }
-	},
-	watch:{
-		'hasLogin':function(){
-			 //  登录状态改变，再次请求数据
-			 this.$parent.login=true;
-		}
 	}
 }
 </script>
@@ -114,6 +117,7 @@ export default {
 		margin-right: 70px;
 	}
 	.nav-userInfo .dropdown{
+	    z-index:99;
 	}
 	.nav-userInfo .dropdown>ul{
         display: none;
@@ -129,11 +133,12 @@ export default {
 		padding:0px;
 		margin-top:20px;
 		font-size: 14px;
-	}
+		z-index: 99;
+      }
 	.nav-userInfo ul li{
 		line-height: 20px;
 		border-bottom:1px solid #ddd;
-		padding:12px 0px;
+		padding:12px 30px;
 		background: #f6f6f1;
 		text-align: center;
 		cursor: pointer;

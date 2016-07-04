@@ -4,7 +4,7 @@
   	<div class="my-profile">
   		<div class="basic-info">
       <div class="edit-profile">
-         <a v-link="{ path:'/setting' }">编辑资料</a>
+         <a v-link="{ path:'/setting' }" v-if="!showBtn">编辑资料</a>
       </div>
       <div class="top">
   			<span>{{ userInfo.username }},</span>
@@ -26,7 +26,7 @@
   		<div class="relation-info">
            <div>
              <p>关注了<span class="point">{{userInfo.concerndPersons.length }}</span>人</p>
-             <button type="button">我要关注</button>
+             <button type="button" v-if="showBtn" @click="concernIndexPerson">我要关注</button>
            </div>
   		</div>
   	</div>
@@ -86,11 +86,15 @@ export default {
                 item.show=true;
            });
            return {
-             	userInfo:userInfo
+             	userInfo:userInfo,
+              queryUserId:'',
+              myId:localStorage.userId
            }
 		},
-		route (){
-
+		route:{
+         data (transition){
+              this.queryUserId=transition.to.params.userId;
+         }
 		},
 		ready () {
               document.title='关注的人';
@@ -117,7 +121,7 @@ export default {
                data:'' 
                //判断show的状态，发送本人ID和关注的人ID和这个状态
                success:function(){
-                  
+                   
                },
                error:function(){
   
@@ -125,7 +129,38 @@ export default {
             })
 
             */
+       },
+       concernIndexPerson:function(event){
+             var self=this;
+             var obj={
+                 concernPersonId:this.queryUserId,
+                 concernd:event.target.dataset.concernd
+             };
+             $.ajax({
+                  url:'',
+                  type:'post',
+                  data:{
+                     concernPersonId:JSON.stringify(obj)
+                  },
+                  success:function(){
+                      
+                  },
+                  error:function(){
+                     console.log('关注失败');
+                  }
+             });
        }
+    },
+    computed:{
+        'showBtn':function(){
+             if(this.queryUserId===this.myId){
+                return false;
+             }
+             return true;
+         },
+         'concernd':function(){
+          
+         }
     }
 	}
 </script>

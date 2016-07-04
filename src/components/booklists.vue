@@ -127,25 +127,40 @@
    export default {
    	  data (){
    	  	 return {
-   	  	 	books:newBooksData
+   	  	 	 books:''
    	  	 }
    	  },
-      route:{
-         data (){
+      ready (){
+           this.books=newBooksData;
+           var newBook={
+               userId:localStorage.userId||'',
+               index:1
+           };
            var self=this;
-           $.ajax({
-              url:'../assets/data/newbooksdata.json',
-              type:'post',
-              dataType:'json',
-              success:function(data){
-                 self.books=data;
-              },
-              error:function(){
-                 alert('error');
-              }
+           setTimeout(function(){
+                         $.ajax({
+                              url:'http://172.21.185.3:8080/Test/mainpage',
+                              type:'post',
+                              dataType:'json',
+                              data:{
+                                  index:JSON.stringify(newBook)
+                              },
+                              success:function(data){
+                                    self.books=data[0].newbook;
+                                    // 显示出错，bookProfile 
+                                    /*self.books.forEach(function(item){
+                                        console.log(item);
+                                    })
+                                    self.books.forEach(function(item){
+                                          item.showProfile=false;
+                                    });*/
+                              },
+                              error:function(){
+                                  console.log('error 新书推荐');
+                              }
+                          });
+           },0);
         
-           });
-         }
       },
    	  methods:{
            showProfileInfo:function(event){

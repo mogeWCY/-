@@ -34,6 +34,9 @@ export  default{
          	notices:notices
          }
 	 },
+   ready () {
+       document.title="系统消息";
+   },
    components:{
      	'myheader':require('../components/myheader.vue'),
      	'myfooter':require('../components/myfooter.vue')

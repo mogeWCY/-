@@ -38,54 +38,60 @@ export default {
 	},
 	methods:{
 		sendInfo:function(){
-			var  userData={
-				 useremail:this.useremail,
-				 password:this.password
-			};
-      var self=this;
-      if(this.validateEmail()){//如果格式正确
-                // ajax 提交，
-                //this.changeLoginStatus();
-                 var redirect = decodeURIComponent(self.$route.query.redirect || '/');
-                   self.$route.router.go(redirect);
-                /*
-                 */$.ajax({
-                    url:'http://172.24.242.2:8080/login',
+			   var  userData={
+				      useremail:this.useremail,
+				      password:this.password
+			   };
+        var self=this;
+        if(this.validateEmail()){//如果格式正确
+                   /*localStorage.userId=123344;
+                   localStorage.username='浴火小青春';
+
+                   var redirect = decodeURIComponent(self.$route.query.redirect || '/');
+                   self.$route.router.go(redirect);*/
+                  // 提交email和密码
+                  $.ajax({
+                    url:'http://172.29.118.2:8080/Test/login',
                     dataType:'json',
                     type:'post',
-                    data:{userData:userData},
+                    data:{
+                      userData:JSON.stringify(userData)
+                    },
                     success:function(data){
-                        if(data.status){//判断登录是否成功
-                           //  记录username/email
-                           this.changeLoginStatus();
-                           /*
-                   var redirect = decodeURIComponent(self.$route.query.redirect || '/');
-                   self.$route.router.go(redirect);
-                            */
-                       /* }else{
-                           biu("输入的账号或密码有误，请重新输入",{
-                             type:'warning'
-                           });
-                        }
+                        if(data[0].status){//判断登录是否成功
+                           // 记录重定向的地址
+                           var redirect = decodeURIComponent(self.$route.query.redirect || '/');
+                           self.$route.router.go(redirect);
+                           
+                           //登录成功，保存用户名和密码到本地
+                           localStorage.userId=data[0].userinfo.userid;
+                           localStorage.username=data[0].userinfo.username;
+                           
+                           /*if(data.isFisrtLogin){ //第一次登录，跳转到setting.vue
+                               self.$route.router.go('/setting');
+                           }*/
+                           self.$route.router.go('/');
+                          }else{
+                              biu("输入的账号或密码有误，请重新输入",{
+                                  type:'warning'
+                              });
+                          }
                     },
                     error:function(){
-                        console.log('hello');
-                    },
-                    beforeSend:function(){
-                    	//发送请求前调用
+                        console.log('error');
                     }
-                });*/
-            }else{
+                });
+        }else{
                 //
-            }
-		   },
-        validate:function(){
+        }
+		},
+    validate:function(){
         	if(this.validateEmail()){
         		return true;
         	}
         	return false;
-        },
-        showPwd:function(){
+    },
+    showPwd:function(){
            if(this.iptType=='text'){
                 this.iptType='password';
                 return false;
@@ -94,8 +100,8 @@ export default {
                 this.iptType='text';
                 return false;
            }
-        },
-        validateEmail:function(){
+    },
+    validateEmail:function(){
         	var filter  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         	if (filter.test(this.useremail)) {// 邮箱格式正确
                    return true;
@@ -104,9 +110,8 @@ export default {
                  type:'warning'
              });
                return false;
-        }
-	},
-	props:['isShowLogin']
+    }
+  }
 }
 </script>
 <style src="../assets/css/biu.css"></style>
@@ -182,8 +187,7 @@ export default {
   	left: 0px;
  	width: 100%;
  	height: 100%;
- 	/*background: rgba(31,31,31,0.12);*/
-  background: url('https://pixabay.com/static/uploads/photo/2015/05/20/06/25/hong-kong-774869_960_720.jpg');
+  background: url("https://pixabay.com/static/uploads/photo/2015/05/20/06/25/hong-kong-774869_960_720.jpg");
   background-size: cover;
  	z-index: 1;
  }

@@ -4,7 +4,7 @@
   	<div class="my-profile">
   		<div class="basic-info">
       <div class="edit-profile">
-         <a v-link="{path:'/setting'}">编辑资料</a>
+         <a v-link="{path:'/setting'}" v-if="showBtns">编辑资料</a>
       </div>
       <div class="top">
   			<span>{{ userInfo.username }},</span>
@@ -26,8 +26,8 @@
   		<div class="relation-info">
            <div>
              <p>关注了<a v-link="{ params:{ userId: userInfo.userId },name:'followees'}"class="point">{{userInfo.concerndPersons.length }}</a>人</p>
-             <button type="button">我要关注</button>
-             <button type="button">我要换书</button>
+             <button type="button" v-if="!showBtns">我要关注</button>
+             <button type="button" v-if="!showBtns">我要换书</button>
            </div>
   		</div>
   	</div>
@@ -130,12 +130,17 @@ export default {
             concerndPersons:['s','a','c','d']
            };
            return {
-             	userInfo:userInfo
+             	userInfo:userInfo,
+              myId:localStorage.userId,
+              queryUserId:''
            }
 		},
 		route:{
            data (transition) {
-               var userId=transition.to.params.userId;
+               this.queryUserId=transition.to.params.userId;
+               //this.myId=localStorage.userId;
+               console.log("urlId:",this.userId);
+               console.log("myId:",this.myId);
                // 根据用户ID获取数据
                // userInfo
                /*$.ajax({
@@ -158,7 +163,17 @@ export default {
 			'myheader':require('../components/myheader.vue'),
 			'myfooter':require('../components/myfooter.vue'),
       'mycomments':require('../components/flowbookcomment.vue')
-		}
+		},
+    computed:{
+       'showBtns':function(){
+            if(this.queryUserId!==this.myId){
+              console.log('false');
+              return false;
+            }
+            console.log('true');
+            return true;
+       }
+    }
 	}
 </script>
 <style scoped>

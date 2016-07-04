@@ -11,7 +11,7 @@
 		    <p>出版社：{{ bookInfo.press }}</p>
 		    <p>出版日期：{{ bookInfo.publicationDate }}</p>
         <p>综合评价:<bookscore :score="bookInfo.bookScore"></bookscore>{{ bookInfo.bookScore }}分</p>
-        <p class="tags">所属标签:<span v-link="{ params:{tagname:tag},name:'tag'}" v-for="tag in bookInfo.tags" track-by="$index">{{ tag }}</span></p>
+        <p class="tags">所属标签:<span v-link="{ params:{tagname:tag},name:'tag'}" v-for="tag in bookInfo.bookTags" track-by="$index">{{ tag }}</span></p>
     </div>
     <div class="book-judge" @click="judge">
         <button type="button" :class="judgeBtnClass.wantBtn" data-type="want">想读</button>
@@ -50,7 +50,7 @@ export default {
           	bookScore:8.6,
           	bookProfile:"战争过后，世界一片荒芜。羸弱的孩子们躲到暗无天日的地底下，吃垃圾为生。所有人都以为生活只能是这样：残酷、痛苦、欺凌……唯有她，始终坚信这世上会有爱与美好，这便是她心中的那片“光”。她要亲自找到“光”，不管付出怎样的代价,一天，她饱受凌虐，奄奄一息地躺在废墟里，等待死亡降临。这时，一位老先生出现在她面前。他冒着生命危险将小女孩藏在黑漆漆的屋子里，悉心照料她，并借由家里的食物、摆设和照片，一一向她叙说战争来临前人们曾拥有的美好生活，竟和她心中的“光”无比吻合。而渐渐恢复健康小女孩亦为心如死灰的老先生带来活乐趣和希望……面对黑暗的再次袭来，她对美好世界的执念，又能否改变二人的未来？",
           	authorProfile:"1977年中学毕业后，进入北京鲁迅文学院进修深造。1983年开始创作，同年进入浙江省海盐县文化馆。[2]  1984年开始发表小说，《活着》和《许三观卖血记》同时入选百位批评家和文学编辑评选的九十年代最具有影响的十部作品。[3]  1998年获意大利格林扎纳·卡佛文学奖。2005年获得中华图书特殊贡献奖",
-          	tags:['文学',"诗歌","童话"],
+          	bookTags:['文学',"诗歌","童话"],
             comments:{
                
             }
@@ -58,7 +58,9 @@ export default {
          return {
          	name:'wcy',
          	bookId:'',
-         	bookInfo:bookInfo,
+         	bookInfo:'',
+          userId:localStorage.userId,
+          username:localStorage.username,
           judgeBtnClass:{
              wantBtn:{
                'btn':true,
@@ -80,8 +82,45 @@ export default {
      },
 	 route:{
 	 	data (transition) {
+             var self=this;
              var id=transition.to.params.bookId;
              this.bookId=id;
+             var obj={
+                  bookId:this.bookId
+             };
+             console.log(obj);
+             $.ajax({
+                 url:'http://172.21.185.3:8080/Test/bookIntroduction',
+                 type:'post',
+                 dataType:'json',
+                 data:{
+                     bookId:JSON.stringify(obj)
+                 },
+                 success:function(data){
+                    self.bookInfo=data;
+                    console.log("书籍详情页");
+                    console.log(data);
+                 },
+                 error:function(data){
+
+                 }
+             });
+             if(this.userId){
+                    $.ajax({
+                        url:'',
+                        type:'post',
+                        data:{
+                           userId:self.userId,
+                           bookId:self.bookId
+                        },
+                        success:function(data){
+                            
+                        },
+                        error:function(data){
+                             
+                        }
+                    });
+             }
              // 获取书的详情介绍，以及书对应的评论
              // 获取用户ID，
              // 发送此本书的状态，检查是否在想读/拥有/读过的序列中
@@ -102,9 +141,19 @@ export default {
      }
    },
    methods:{
+      jdugeLogin:function(){
+          if(!this.userId){
+               this.$route.router.go('/login');
+               return false;
+          }
+          return true;
+      },
       judge:function(event){
          if(event.target.tagName.toLowerCase()=='button'){
              var type=event.target.dataset.type;
+             if(!this.jdugeLogin()){
+               return -1;
+             }
              // 验证登陆
              // sendData
              switch (type) {
@@ -140,6 +189,7 @@ export default {
          });
       },
       haveAction:function(){
+
          if(this.judgeBtnClass.haveBtn['gray']){
            return false;
          }
@@ -175,6 +225,10 @@ export default {
 }
 .book-info .book-cover{
    float: left;
+}
+.book-info img{
+   width: 120px;
+   height: 150px;
 }
 .book-info .book-detail{
   float: left;

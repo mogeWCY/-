@@ -106,7 +106,7 @@ var  guessYouLikeBookData=[
         bookTags:['日本','小说','外国文学'],
         comment:'每颗真心都有属于自己的倔强柔软'//评论
       },
-            {
+      {
         bookId:'345',
         bookName:'你是我的命运',
         coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
@@ -128,7 +128,7 @@ var  guessYouLikeBookData=[
    export default {
    	  data () {
    	  	return {
-   	  		books:guessYouLikeBookData,
+   	  		books:'',
           keyWord:''
    	  	}
    	  },
@@ -139,6 +139,26 @@ var  guessYouLikeBookData=[
            data (transition) {
               var query=transition.to.query,key=query.book;
               this.keyWord=decodeURI(key);
+              var keyWord={
+                  keyWord:this.keyWord
+              };
+              var self=this;
+              $.ajax({
+                 url:'http://172.21.185.3:8080/Test/searchresult',
+                 type:'post',
+                 data:{
+                    keyWord:JSON.stringify(keyWord)
+                 },
+                 success:function(data){
+                    //console.log(data);
+                    self.books=data;
+                    //console.log('hello wolrd ');
+                   // console.log(data);
+                   },
+                 error:function(){
+                   console.log('搜索结果 error');
+                 }
+              });
            }
       },
    	  components:{
