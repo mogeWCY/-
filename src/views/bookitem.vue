@@ -33,48 +33,19 @@
        <commenteditor></commenteditor>
   </div>
 </div>
-
+<button type="button" @click="test">test</button>
 <myfooter></myfooter>
 </template>
 <script>
 import biu from 'biu.js'
 export default {
 	 data () {
-	 	 var bookInfo={
-          	bookId:'123',
-          	bookName:'活着',
-          	coverImgUrl:'http://img3x9.ddimg.cn/72/14/23979159-1_l_4.jpg',
-          	author:'余华',
-          	press:'华中科技大学出版社',
-          	publicationDate:'2015/10/05',
-          	bookScore:8.6,
-          	bookProfile:"战争过后，世界一片荒芜。羸弱的孩子们躲到暗无天日的地底下，吃垃圾为生。所有人都以为生活只能是这样：残酷、痛苦、欺凌……唯有她，始终坚信这世上会有爱与美好，这便是她心中的那片“光”。她要亲自找到“光”，不管付出怎样的代价,一天，她饱受凌虐，奄奄一息地躺在废墟里，等待死亡降临。这时，一位老先生出现在她面前。他冒着生命危险将小女孩藏在黑漆漆的屋子里，悉心照料她，并借由家里的食物、摆设和照片，一一向她叙说战争来临前人们曾拥有的美好生活，竟和她心中的“光”无比吻合。而渐渐恢复健康小女孩亦为心如死灰的老先生带来活乐趣和希望……面对黑暗的再次袭来，她对美好世界的执念，又能否改变二人的未来？",
-          	authorProfile:"1977年中学毕业后，进入北京鲁迅文学院进修深造。1983年开始创作，同年进入浙江省海盐县文化馆。[2]  1984年开始发表小说，《活着》和《许三观卖血记》同时入选百位批评家和文学编辑评选的九十年代最具有影响的十部作品。[3]  1998年获意大利格林扎纳·卡佛文学奖。2005年获得中华图书特殊贡献奖",
-          	bookTags:['文学',"诗歌","童话"],
-            comments:{
-               
-            }
-	 	 };
          return {
-         	name:'wcy',
          	bookId:'',
          	bookInfo:'',
-          userId:localStorage.userId,
+          userId:localStorage.userId||'',
           username:localStorage.username,
-          judgeBtnClass:{
-             wantBtn:{
-               'btn':true,
-               'gray':false
-             },
-             readBtn:{
-               'btn':true,
-               'gray':false
-             },
-             haveBtn:{
-               'btn':true,
-               'gray':false
-             }
-          }
+          btnStatus:''
          }
 	 },
 	 ready (){
@@ -83,44 +54,28 @@ export default {
 	 route:{
 	 	data (transition) {
              var self=this;
-             var id=transition.to.params.bookId;
-             this.bookId=id;
+             this.bookId=transition.to.params.bookId;
              var obj={
-                  bookId:this.bookId
+                  bookId:this.bookId,
+                  userId:this.userId
              };
-             console.log(obj);
              $.ajax({
                  url:'http://172.21.185.3:8080/Test/bookIntroduction',
                  type:'post',
                  dataType:'json',
                  data:{
-                     bookId:JSON.stringify(obj)
+                     data:JSON.stringify(obj)
                  },
                  success:function(data){
-                    self.bookInfo=data;
+                    self.bookInfo=data[0];
+                    self.btnStatus=data[1];
                     console.log("书籍详情页");
-                    console.log(data);
+                    console.log(self.btnStatus);
                  },
                  error:function(data){
-
+                    console.log("书籍详情页");
                  }
              });
-             if(this.userId){
-                    $.ajax({
-                        url:'',
-                        type:'post',
-                        data:{
-                           userId:self.userId,
-                           bookId:self.bookId
-                        },
-                        success:function(data){
-                            
-                        },
-                        error:function(data){
-                             
-                        }
-                    });
-             }
              // 获取书的详情介绍，以及书对应的评论
              // 获取用户ID，
              // 发送此本书的状态，检查是否在想读/拥有/读过的序列中
@@ -138,6 +93,23 @@ export default {
      },
      authorSentenceArr:function(){
        return  this.bookInfo.authorProfile.split('。');
+     },
+     judgeBtnClass:function(){
+              var  tempClassObj={
+                  wantBtn:{
+                      'btn':true,
+                      'gray':this.btnStatus.want //false
+                    },
+                  readBtn:{
+                      'btn':true,
+                      'gray':this.btnStatus.read  //false
+                   },
+                  haveBtn:{
+                      'btn':true,
+                      'gray':this.btnStatus.have  //true
+                  }
+             };
+            return tempClassObj;
      }
    },
    methods:{
@@ -154,8 +126,6 @@ export default {
              if(!this.jdugeLogin()){
                return -1;
              }
-             // 验证登陆
-             // sendData
              switch (type) {
                 case 'want' :this.wantAction();break;
                 case 'read' :this.readAction();break;
@@ -168,35 +138,91 @@ export default {
           //获取userId , bookId
           //ajax 发送数据
           if(this.judgeBtnClass.wantBtn['gray']){
-            return false;
+              return false;
           }
-          this.judgeBtnClass.wantBtn['gray']=true;
           var jdUrl="http://search.jd.com/Search?keyword="+this.bookInfo.bookName+"&enc=utf-8&wq="+
           this.bookInfo.bookName+"&pvid=1pdif3qi.dk6wya";
           var template="那快来京东看看有木有<a style='font-size:22px;color:red' target='_blank' href='" +jdUrl+ "'>"+this.bookInfo.bookName+"</a>吧";
-
-          biu(template,{
-            type:'success'
+          var tempObj={
+              userId:this.userId,
+              bookId:this.bookId,
+              typeId:2
+          };
+          var self=this;
+          $.ajax({
+              url:'http://172.21.185.3:8080/Test/choosetrend',
+              type:'post',
+              data:{
+                  data:JSON.stringify(tempObj)
+              },
+              success:function(data){
+                   self.btnStatus.want=true;
+                   console.log(data);
+                   console.log(self.btnStatus.want);
+                   biu(template,{
+                        type:'success'
+                   });
+              },
+              error:function(){
+                  
+              }
           });
       },
       readAction:function(){
+         var self=this;
          if(this.judgeBtnClass.readBtn['gray']){
            return false;
          }
-         this.judgeBtnClass.readBtn['gray']=true;
-         biu('既然读过了，快点留下你的评价吧',{
-              type:'success'
+         var tempObj={
+             userId:this.userId,
+             bookId:this.bookId,
+             typeId:3
+         };
+         var self=this;
+         $.ajax({
+             url:'http://172.21.185.3:8080/Test/choosetrend',
+             type:'post',
+             data:{
+               data:JSON.stringify(tempObj)
+             },
+             success:function(){
+                 self.btnStatus.read=true;
+                 biu('既然读过了，快点留下你的评价吧',{
+                      type:'success'
+                  });
+             },
+             error:function(){
+
+             }
          });
       },
       haveAction:function(){
-
          if(this.judgeBtnClass.haveBtn['gray']){
            return false;
          }
-         this.judgeBtnClass.haveBtn['gray']=true;
-         biu('好的，知道你有这本书了',{
-           type:'success'
-         })
+        var tempObj={
+            userId:this.userId,
+            bookId:this.bookId,
+            typeId:1
+        };
+        var self=this;
+        $.ajax({
+           url:'http://172.21.185.3:8080/Test/choosetrend',
+           type:'post',
+           data:{
+               data:JSON.stringify(tempObj)
+           },
+           success:function(){
+                self.btnStatus.have=true;
+                biu('好的，知道你有这本书了',{
+                      type:'success'
+                });
+           },
+           error:function(){
+
+           }
+        });
+        // this.judgeBtnClass.haveBtn['gray']=true;
       }
    }
 }
