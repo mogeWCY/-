@@ -57,7 +57,8 @@ export default {
            this.$route.router.go('/login?redirect='+encodeURIComponent(this.$route.path));
         },
         showRegisterModal:function(){
-             this.isShowRegister=true;
+            // this.isShowRegister=true;
+            this.$route.router.go('/register?redirect='+encodeURIComponent(this.$route.path));
         },
         search:function(){
         	this.$route.router.go('/search?book='+this.searchKeyWord);

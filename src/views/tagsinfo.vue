@@ -2,7 +2,7 @@
   <myheader></myheader>
 	<div class="guess">
 		<h2>标签：{{ tag }}</h2>
-    <button type="button" class="btn concern" v-if="show" @click="changeConcern">取消关注</button>
+    <button type="button" class="btn concern" v-if="concernFlag" @click="changeConcern">取消关注</button>
     <button type="button" class="btn no-concern" v-else @click="changeConcern">关注</button>
     <h3>此标签下共有相关书籍 {{ booktotals}} 本</h3>
 		<div class="guess-like-books">
@@ -35,123 +35,28 @@
   <myfooter></myfooter>
 </template>
 <script>
-var  tagBooksData=[
-      {
-        bookId:'345',
-        bookName:'你是我的命运',
-        coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
-        bookScore:8.4,// 评分
-        author:'白石一文',
-        bookTags:['日本','小说','外国文学'],
-        comment:'每颗真心都有属于自己的倔强柔软'//评论
-      },
-      {
-        bookId:'345',
-        bookName:'你是我的命运',
-        coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
-        bookScore:8,// 评分
-        author:'白石一文',
-        bookTags:['日本','小说','外国文学'],
-        comment:'每颗真心都有属于自己的倔强sdsdddddddddddddd柔软'//评论
-      },
-      {
-        bookId:'345',
-        bookName:'你是我的命运',
-        coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
-        bookScore:9,// 评分
-        author:'白石一文',
-        bookTags:['日本','小说','外国文学'],
-        comment:'每颗真心都有属于自己的倔强柔软'//评论
-      },
-      {
-        bookId:'345',
-        bookName:'你是我的命运',
-        coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
-        bookScore:3,// 评分
-        author:'白石一文',
-        bookTags:['日本','小说','外国文学'],
-        comment:'每颗真心都有属于自己的倔强柔软'//评论
-      },
-            {
-        bookId:'345',
-        bookName:'你是我的命运',
-        coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
-        bookScore:8.4,// 评分
-        author:'白石一文',
-        bookTags:['日本','小说','外国文学'],
-        comment:'每颗真心都有属于自己的倔强柔软'//评论
-      },
-      {
-        bookId:'345',
-        bookName:'你是我的命运',
-        coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
-        bookScore:8.4,// 评分
-        author:'白石一文',
-        bookTags:['日本','小说','外国文学'],
-        comment:'每颗真心都有属于自己的倔强柔软'//评论
-      },
-            {
-        bookId:'345',
-        bookName:'你是我的命运',
-        coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
-        bookScore:8.4,// 评分
-        author:'白石一文',
-        bookTags:['日本','小说','外国文学'],
-        comment:'每颗真心都有属于自己的倔强柔软'//评论
-      },
-      {
-        bookId:'345',
-        bookName:'你是我的命运',
-        coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
-        bookScore:8.4,// 评分
-        author:'白石一文',
-        bookTags:['日本','小说','外国文学'],
-        comment:'每颗真心都有属于自己的倔强柔软'//评论
-      },
-            {
-        bookId:'345',
-        bookName:'你是我的命运',
-        coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
-        bookScore:8.4,// 评分
-        author:'白石一文',
-        bookTags:['日本','小说','外国文学'],
-        comment:'每颗真心都有属于自己的倔强柔软'//评论
-      },
-      {
-        bookId:'345',
-        bookName:'你是我的命运',
-        coverImgUrl:'https://img3.doubanio.com/spic/s28580162.jpg',
-        bookScore:8.4,// 评分
-        author:'白石一文',
-        bookTags:['日本','小说','外国文学'],
-        comment:'每颗真心都有属于自己的倔强柔软'//评论
-      }
-   ];
-   var userInfo={
-       userId:112222,
-       userName:'浴火小青春',
-       concernTags:["小说","文学","随笔"]
-   };
    export default {
    	  data () {
    	  	return {
    	  		books:'',
           tag:'',
-          userInfo:userInfo,
-          show:''
+          userId:localStorage.userId||'',
+          concernFlag:false,
+          login:(localStorage.userId)?true:false
    	  	}
    	  },
       ready() {
            document.title="标签详情";
       },
-      route:{ 
+      route:{
           data (transition) {
              var tagname=transition.to.params.tagname;
-             this.tag=tagname;
+             this.tag=decodeURIComponent(tagname);
              var obj={
-                 'tagName':this.tag
+                 'tagName':this.tag,
+                 'userId':this.userId,
+                 'login':this.login
              };
-             this.show=(this.userInfo.concernTags.indexOf(tagname)!==-1)?true:false;
              // 获取用户信息,userInfo
              // 获取标签信息,tagBooksData
              var self=this;
@@ -162,9 +67,10 @@ var  tagBooksData=[
                      tagName:JSON.stringify(obj)
                   },
                   success:function(data){
-                     //console.log("标签详情");
-                     self.books=data;
-                     //console.log(data);
+                          self.books=data.splice(0,data.length-1);
+                          self.concernFlag=data[data.length-1].status;
+                          console.log("标签详情");
+                          console.log(data);
                   },
                   error:function(){
                      console.log("标签详情出错");
@@ -183,11 +89,37 @@ var  tagBooksData=[
          }
       },
       methods:{
+      jdugeLogin:function(){
+          if(!this.userId){
+               this.$route.router.go('/login');
+               return false;
+          }
+          return true;
+       },
         changeConcern:function(){
-           this.show=!this.show;
-           /*
-            ajax 发送取消/添加关注关系
-            */
+           if(!this.jdugeLogin()){
+              this.$route.router.go('/login?redirect='+encodeURIComponent(this.$route.path));
+              return -1;
+           }
+           var self=this;
+           var tempObj={
+               userId:this.userId,
+               tagName:this.tag,
+               status:this.concernFlag
+           };
+            $.ajax({
+                url:'http://172.21.185.3:8080/Test/choosetag',
+                type:'post',
+                data:{
+                    data:JSON.stringify(tempObj)
+                },
+                success:function(data){
+                      self.concernFlag=!self.concernFlag;
+                },
+                error:function(){
+                      console.log('error');
+                }
+           });
         }
       }
     }

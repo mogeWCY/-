@@ -4,7 +4,7 @@
 	   <form action="" method="post" @submit.prevent='changeInfo'>
 	            <div>
 	   	    	<label for="username">昵称</label>
-	   	    	<input type="text" name="username" v-model="userInfo.username">
+	   	    	<input type="text" name="userName" v-model="userInfo.userName">
                 </div>
 
                 <div>
@@ -23,25 +23,21 @@
 	   	    	<i class="fa fa-lg fa-eye" aria-hidden="true" @click="showPwd"></i>
 	   	    	</div>
                 </div>
-                 <div>
-                 	<label for="qqnumber">QQ号</label>
-                 	<input type="text" name="qqnumber" v-model="userInfo.qqnumber">
-                 </div>
                 <div>
 	   	    	<label for="address">地址</label>
-	   	    	<input type="text" v-model="userInfo.address" maxlength="30">
+	   	    	<input type="text" v-model="userInfo.city" maxlength="30">
                 </div>
 
                 <div>
-	   	    	<label for="userprofile">一句话简介</label>
-	   	    	<input type="text" maxlength="30" v-model="userInfo.userprofile">
+	   	    	<label for="profile">一句话简介</label>
+	   	    	<input type="text" maxlength="30" v-model="userInfo.profile">
                 </div>
      
                 <div class="concernd">
 	   	    	<label for="">关注的标签</label>
 	   	    	<span>(可去除不想关注的标签)</span>
 	   	    	<div class="tags">
-	   	    	<span v-for="tag in userInfo.concerndTags">{{ tag }}<i @click="delateBookTag" class="fa fa-times-circle" aria-hidden="true" name='booktag'></i></span>
+	   	    	<span v-for="tag in userInfo.tags">{{ tag }}<i @click="delateBookTag" class="fa fa-times-circle" aria-hidden="true" name='booktag'></i></span>
 	   	    	</div>
 	   	    	</div>
 
@@ -49,18 +45,21 @@
 	   	    	<label>拥有的书籍</label>
 	   	    	<span>(可去除现在没有的书籍)</span>
 	   	    	<div class="tags">
-	   	    	<span v-for="book in userInfo.mybooks">《{{ book }}》<i @click="delateBook" class="fa fa-times-circle" aria-hidden="true" name="mybooktag"></i></span>
+	   	    	<span v-for="book in userInfo.have">《{{ book.bookName }}》<i @click="delateBook" class="fa fa-times-circle" aria-hidden="true" name="mybooktag"></i></span>
                 </div>
                 </div>
+                 <form action="http://172.21.185.2:8080/example_mysql/rest/upload/image" type="post">
                 <div class="userimg">
-	   	    	<label for="">修改头像</label>
-	   	    	<img :src="userInfo.userImgUrl">
-	   	    	<input type="file" accept="image/jpeg,image/gif,image/png" @change="uploadImg" id='filebtn'>
-	   	    	<button type="button" @click="mocklClick">修改头像</button>
-	   	    	</div>
+                <input type="hidden" v-model="userId" name="userId">
+                	   	<label for="">修改头像</label>
+	   	    			<img :src="userInfo.userImgUrl">
+	   	    			<input type="file" accept="image/jpeg,image/gif,image/png" @change="uploadImg" id='filebtn'>
+	   	    			<button type="button" @click="mocklClick">修改头像</button>
+	   	    			</div>
 	   	    	<div class="submit">
 	   	    		<input type="submit" value="提交">
 	   	    	</div>
+	   	    	</form>
 	   </form>
 	   <div>
 	   	   <img :src="imageUrl">
@@ -85,7 +84,8 @@
 	export default {
 		data () {
              return {
-                 userInfo:userInfoData,
+                 userInfo:'',
+                 userId:localStorage.userId,
                  iptType:'password',
                  imageUrl:'',
                  inputPwd:''
@@ -94,6 +94,28 @@
 		route :{
             data () {
                //获取已登录用户ID。如果未登陆，页面跳转主页
+               if(!this.jdugeLogin()){
+              		this.$route.router.go('/login?redirect='+encodeURIComponent(this.$route.path));
+              		return -1;
+               }
+               var tempObj={
+               	  userId:this.userId
+               };
+               var self=this;
+ 				$.ajax({
+                   url:'http://192.168.83.1:8080/Test/userinfo',
+                   type:'post',
+                   data:{
+                      userId:JSON.stringify(tempObj)
+                   },
+                   success:function(data){
+                   	    self.userInfo=data;
+                        console.log(data);
+                   },
+                   error:function(){
+  
+                   }
+               });
             }
 		},
 		ready (){
@@ -110,6 +132,13 @@
 			'myfooter':require('../components/myfooter.vue')
 		},
 		methods:{
+			 jdugeLogin:function(){
+          			if(!this.userId){
+               			this.$route.router.go('/login');
+               			return false;
+          			}
+          			return true;
+             },
              showPwd:function(){
                      if(this.iptType=='text'){
                            this.iptType='password';
@@ -124,13 +153,13 @@
              	var allXIcons=document.getElementsByName('booktag');
              	var e=event.target;
              	var idx=[].indexOf.call(allXIcons,e);
-                this.userInfo.concerndTags.splice(idx,1);
+                this.userInfo.tags.splice(idx,1);
              },
              delateBook:function(event){
                 var allXIcons=document.getElementsByName('mybooktag');
              	var e=event.target;
              	var idx=[].indexOf.call(allXIcons,e);
-                this.userInfo.mybooks.splice(idx,1);
+                this.userInfo.have.splice(idx,1);
              },
              uploadImg:function(e){
                    var files = e.target.files || e.dataTransfer.files;
@@ -175,9 +204,31 @@
                 return true;
              },
              changeInfo:function(){
+             	var self=this;
+             	this.userInfo.userId=this.userId;
              	if(this.validate()){
-                    this.changeInfo();
+                    $.ajax({
+                    	url:'http://192.168.83.1:8080/Test/modifyinfo',
+                    	type:'post',
+                    	data:{
+                    	  changeInfo:JSON.stringify(self.userInfo)
+                    	},
+                    	success:function(data){
+                           if(!data["ifDuplicate"]){
+                              biu("你的昵称已被占用",{
+                                type:'warning'
+                              });
+                              return false;
+                           }else{
+                            biu('信息修改成功',{
+                           	  type:'success'
+                            });
+                          }
+                    	},
+                    	error:function(){
 
+                    	}
+                    })
              	}
              },
              cacheInfo:function(){

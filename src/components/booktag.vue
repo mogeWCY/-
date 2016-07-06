@@ -23,12 +23,13 @@ export default{
        //this.tags=allTagsData;
        var index={
        	 userId:localStorage.userId||'',
-       	 index:3
+       	 index:3,
+       	 login:(localStorage.userId)?true:false
        };
        var self=this;
        setTimeout(function(){
                     $.ajax({
-              url:'http://172.21.185.3:8080/Test/mainpage',
+              url:'http://192.168.83.1:8080/Test/mainpage',
               type:'post',
               dataType:'json',
               data:{

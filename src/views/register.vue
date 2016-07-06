@@ -44,25 +44,34 @@ export default {
 			             };
              var self=this;
              if(this.validate()){//如果格式正确
+                        var tempObj={
+                            username:this.username,
+                            password:this.password,
+                            useremail:this.useremail
+                        };
+                   
                 // ajax 提交，
                      $.ajax({
-                	       url:'',
-                	       dataType:'json',
-                	       data:{userData:userData},
+                	       url:'http://172.21.185.3:8080/Test/enroll',
+                         type:'post',
+                	       data:{
+                             userData:JSON.stringify(tempObj)
+                         },
                 	       success:function(data){
-                                    if(data.status){
+                                    console.log(data);
+                                    if(!data.exist){
+
                                            localStorage.username=self.username;
                                            localStorage.userId=data.userId;
-                                           self.$route.route.go('/setting');
-                                           
+                                           self.$route.router.go('/setting');
                                     }else{
-                                          biu('系统问题，请重新刷新页面注册',{
+                                          biu('用户名已被注册，请重新填写',{
                                               type:'warning'
                                           });
                                     }
                 	               },
                 	       error:function(){
-                            
+                            console.log("注册页错误");
                 	       }
                     });
             }

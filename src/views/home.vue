@@ -7,14 +7,14 @@
          <a v-link="{path:'/setting'}" v-if="showBtns">编辑资料</a>
       </div>
       <div class="top">
-  			<span>{{ userInfo.username }},</span>
-        {{ userInfo.userprofile}}
+  			<span>{{ userInfo.userName }},</span>
+        {{ userInfo.profile}}
         </div>
         <div class="body">
-          <img :src="userInfo.userImgUrl" alt="{{ userInfo.username }}">
+          <img :src="userInfo.userImgUrl" alt="{{ userInfo.userName }}">
           <div>
           <i class="fa fa-map-marker" aria-hidden="true"></i>
-         <span>{{ userInfo.address[0] + userInfo.address[1] }}</span>
+         <span>{{ userInfo.city }}</span>
          </div>
          <div>
          <i class="fa fa-mars" aria-hidden="true" name="sex"></i>
@@ -26,35 +26,34 @@
   		<div class="relation-info">
            <div>
              <p>关注了<a v-link="{ params:{ userId: userInfo.userId },name:'followees'}"class="point">{{userInfo.concerndPersons.length }}</a>人</p>
-             <button type="button" v-if="!showBtns">我要关注</button>
-             <button type="button" v-if="!showBtns">我要换书</button>
+             <button type="button" v-if="!showBtns" @click='concern'>我要关注</button>
            </div>
   		</div>
   	</div>
   	<div class="my-read-books">
        <h2>我读过的书</h2>
        <div>
-            <a v-for="book in userInfo.myreadbooks" href="#" :title="book.bookName"
+            <a v-for="book in userInfo.read" href="#" :title="book.bookName"
            v-link="{ params:{ bookId: book.bookId },name:'book'}">
-                <img :src="book.bookCoverImgUrl">
+                <img :src="book.coverImgUrl">
             </a>
        </div>
     </div>
     <div class="my-want-books">
          <h2>我想读的书</h2>
          <div>
-            <a v-for="book in userInfo.mywantbooks" href="#" :title="book.bookName"
+            <a v-for="book in userInfo.want" href="#" :title="book.bookName"
             v-link="{ params:{ bookId: book.bookId },name:'book'}">
-               <img  :src="book.bookCoverImgUrl" >
+               <img  :src="book.coverImgUrl" >
             </a>
          </div>
     </div>
   	<div class="my-books">
         <h2>我拥有的书</h2>
         <div>
-        <a v-for="book in userInfo.mybooks" href="#" :title="book.bookName"
+        <a v-for="book in userInfo.have" href="#" :title="book.bookName"
         v-link="{ params:{ bookId: book.bookId },name:'book'}">
-           <img :src="book.bookCoverImgUrl">
+           <img :src="book.coverImgUrl">
         </a>
         </div>
     </div>
@@ -67,97 +66,49 @@
 <script>
 export default {
 		data () {
-            var  userInfo ={
-            userImgUrl:'https://sfault-avatar.b0.upaiyun.com/337/270/337270487-574ecf99584f4_huge256',
-            username:'浴火小青春',
-            userId:12345,
-            sex:'男',
-            qqnumber:2938429494,
-            address:['湖北省','武汉市','洪山区','珞瑜路','1037号'],
-            userprofile:'音浪太强，不晃会被撞到地上',
-            concerndTags:["文学","历史","小说","童话","故事","科幻","耽美","诗歌"],
-            mybooks:[
-                    {
-                       bookId:110,
-                       bookCoverImgUrl:'https://img3.doubanio.com/mpic/s27279654.jpg',
-                       bookName:'活着'
-                    },
-                    {
-                      bookId:111,
-                      bookCoverImgUrl:'https://img1.doubanio.com/mpic/s8875457.jpg',
-                      bookName:'西游记'
-                    },
-                    {
-                      bookId:112,
-                      bookCoverImgUrl:'https://img1.doubanio.com/mpic/s3846669.jpg',
-                      bookName:'水浒传'
-                    }
-            ],
-            mywantbooks:[
-                  {
-                     bookId:123,
-                     bookCoverImgUrl:'https://img3.doubanio.com/lpic/s28829910.jpg',
-                     bookName:'回到初衷'
-                  },
-                  {
-                     bookId:124,
-                     bookCoverImgUrl:"https://img3.doubanio.com/lpic/s28672942.jpg",
-                     bookName:"超越帝国"
-                  },
-                  {
-                    bookId:125,
-                    bookCoverImgUrl:"https://img3.doubanio.com/lpic/s28622011.jpg",
-                    bookName:"雕刻时光"
-                  }
-            ],
-            myreadbooks:[
-                 {
-                   bookId:126,
-                   bookCoverImgUrl:'https://img1.doubanio.com/lpic/s28673707.jpg',
-                   bookName:'死神的浮力'
-                 },
-                 {
-                   bookId:127,
-                   bookCoverImgUrl:'https://img3.doubanio.com/spic/s28588315.jpg',
-                   bookName:'精进'
-                 },
-                 {
-                   bookId:128,
-                   bookCoverImgUrl:'https://img3.doubanio.com/spic/s28579451.jpg',
-                   bookName:'来信勿拆'
-                 }
-            ],
-            concerndPersons:['s','a','c','d']
-           };
            return {
-             	userInfo:userInfo,
+             	userInfo:'',
               myId:localStorage.userId,
               queryUserId:''
            }
 		},
 		route:{
            data (transition) {
+               var self=this;
                this.queryUserId=transition.to.params.userId;
                //this.myId=localStorage.userId;
                console.log("urlId:",this.userId);
                console.log("myId:",this.myId);
-               // 根据用户ID获取数据
-               // userInfo
-               /*$.ajax({
 
-               });*/
+               var tempObj={
+                   queryUserId:this.queryUserId
+               }
+               var self=this;
+               $.ajax({
+                   url:'http://192.168.83.1:8080/Test/userpage',
+                   type:'post',
+                   data:{
+                      queryUserId:JSON.stringify(tempObj)
+                   },
+                   success:function(data){
+                       console.log('hwllo');
+                       console.log(data);
+                       self.userInfo=data;
+                   },
+                   error:function(){
+  
+                   }
+               });
            }
 		},
 		ready () {
               document.title='个人主页';
               var sexIcons=document.getElementsByName('sex');
               if(this.userInfo.sex=='男'){
-                 sexIcons[1].style.display='none';
+                 //sexIcons[1].style.display='none';
               }else{
-                 sexIcons[0].style.display="none";
+                // sexIcons[0].style.display="none";
               }
-              console.log(this.$children);
-              console.log('hello');
 		},
 		components:{
 			'myheader':require('../components/myheader.vue'),

@@ -14,6 +14,7 @@
         <div class="login-remeber-me">
             <input type="checkbox" name="r">
             <label for='r'>记住我</label>
+            <a v-link='{path:"/register"}'>没有账号，来注册</a>
         </div>
 		<div class="login-btn" id="bbb">
 			<button type="button" @click='sendInfo'>登录</button>
@@ -51,26 +52,27 @@ export default {
                    self.$route.router.go(redirect);*/
                   // 提交email和密码
                   $.ajax({
-                    url:'http://172.29.118.2:8080/Test/login',
+                    url:'http://172.21.185.3:8080/Test/login',
                     dataType:'json',
                     type:'post',
                     data:{
                       userData:JSON.stringify(userData)
                     },
                     success:function(data){
-                        if(data[0].status){//判断登录是否成功
+                        console.log(data);
+                        if(data.status){//判断登录是否成功
                            // 记录重定向的地址
                            var redirect = decodeURIComponent(self.$route.query.redirect || '/');
                            self.$route.router.go(redirect);
                            
                            //登录成功，保存用户名和密码到本地
-                           localStorage.userId=data[0].userinfo.userid;
-                           localStorage.username=data[0].userinfo.username;
+                           localStorage.userId=data.userId;
+                           localStorage.username=data.username;
                            
                            /*if(data.isFisrtLogin){ //第一次登录，跳转到setting.vue
                                self.$route.router.go('/setting');
                            }*/
-                           self.$route.router.go('/');
+                          // self.$route.router.go('/');
                           }else{
                               biu("输入的账号或密码有误，请重新输入",{
                                   type:'warning'
@@ -165,6 +167,10 @@ export default {
     margin-top:20px;
     margin-left:45px;
     font-size:14px;
+ }
+ .login-remeber-me a{
+   font-size: 12px;
+  margin-left: 40px;
  }
  .login-btn{
      margin: 20px 0px;

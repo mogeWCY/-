@@ -1,36 +1,90 @@
 <template>
-	<button type="button" @click="getData">点击</button>
+    <div v-for="comment in comments" class="comment">
+         <p>{{ comment.userName }}:{{ comment.content }}</p>
+         <button type="button">展开</button>
+         <div class="replay">
+               <p v-for="replay in comment.son">
+                   {{ replay.content}}
+               </p>
+         </div>
+    </div>
 </template>
 <script>
-            var  data={
-                 useremail:"234567@163.com",
-                 password:"123456"
-            };
-            var userData=JSON.stringify(data);
-	export default {
-		 methods:{
-             getData:function(){
-             	  $.ajax({
-                    url:'http://172.24.242.2:8080/Test/login',
-                    dataType:'json',
-                    contentType: 'application/json',
-                    data:{
-                    	userData:userData
-                    },
-                    type:'post',
-                    success:function(data){
-                        console.log(data);
-                    },
-                    error:function(){
-                        console.log('error');
-                    },
-                    beforeSend:function(){
-                        //发送请求前调用
+export default{
+     data () {
+         var bookComments=[
+         {
+            "content":"好差劲啊 ",
+            "id":1,
+            "time":"2016-06-22",
+            "replyto":"",
+            "userName":"1楼",
+            "son":[
+                    {
+                      "content":"我是回复1楼的",
+                      "id":3,
+                      "time":"2016-06-23",
+                      "replyto":"hust",
+                      "userName":"cra",
+                      "son":[
+                            {
+                              "content":"我是回复小明的",
+                              "id":5,
+                              "time":"2016-06-24",
+                              "replyto":"cra",
+                              "userName":"ss",
+                              "son":[],
+                              "pid":3,
+                              "type":1
+                            }
+                            ],
+                      "pid":1,
+                      "type":1
                     }
-                });
-             }
-		 }
-	}
+                    ],
+            "pid":0,
+            "type":0
+         },
+         {
+            "content":"还可以吧 ",
+            "id":2,
+            "time":"2016-06-22",
+            "replyto":"",
+            "userName":"2楼",
+            "son":[
+                     {
+                        "content":"杩樿",
+                        "id":4,
+                        "time":"2016-06-23",
+                        "replyto":"ssss",
+                        "userName":"pang",
+                        "son":[],
+                        "pid":2,
+                        "type":1
+                     }
+                  ],
+            "pid":0,
+            "type":0
+           }
+         ];
+         return {
+          comments:bookComments
+         }
+     }
+}
 </script>
-<style scoped>
+<style>
+.comment{
+   border:1px solid red;
+}
+.replay{
+    height: 200px;
+    border:1px solid black;
+}
+.show{
+    display: block;
+}
+.hide{
+    display: none;
+}
 </style>

@@ -28,7 +28,7 @@
   <div class="comment">
   <h2>热门评价</h2>
        <div>
-     
+      <comments :comments='comments'></comments>
        </div>
        <commenteditor></commenteditor>
   </div>
@@ -40,12 +40,78 @@
 import biu from 'biu.js'
 export default {
 	 data () {
+       var bookComments=[
+         {
+            "content":"《活着》这本书是个好书啊",
+            "id":1,
+            "time":"2016-06-22",
+            "replyto":"",
+            "userName":"小明",
+            "son":[
+                    {
+                      "content":"1楼沙发",
+                      "id":3,
+                      "time":"2016-06-23",
+                      "replyto":"小明",
+                      "userName":"小红",
+                      "son":[
+                            {
+                              "content":"沙发什么沙发，水货",
+                              "id":5,
+                              "time":"2016-06-24",
+                              "replyto":"小红",
+                              "userName":"小亮",
+                              "son":[],
+                              "pid":3,
+                              "type":1
+                            },
+                            {
+                              "content":"别乱刷存在感",
+                              "id":6,
+                              "time":"2016-06-24",
+                              "replyto":"小红",
+                              "userName":"阿狸",
+                              "son":[],
+                              "pid":3,
+                              "type":1
+                            }
+                            ],
+                      "pid":1,
+                      "type":1
+                    }
+                    ],
+            "pid":0,
+            "type":0
+         },
+         {
+            "content":"还可以吧 ",
+            "id":2,
+            "time":"2016-06-22",
+            "replyto":"",
+            "userName":"2楼",
+            "son":[
+                     {
+                        "content":"可以",
+                        "id":4,
+                        "time":"2016-06-23",
+                        "replyto":"ssss",
+                        "userName":"pang",
+                        "son":[],
+                        "pid":2,
+                        "type":1
+                     }
+                  ],
+            "pid":0,
+            "type":0
+           }
+         ];
          return {
          	bookId:'',
          	bookInfo:'',
           userId:localStorage.userId||'',
           username:localStorage.username,
-          btnStatus:''
+          btnStatus:'',
+          comments:bookComments
          }
 	 },
 	 ready (){
@@ -60,7 +126,7 @@ export default {
                   userId:this.userId
              };
              $.ajax({
-                 url:'http://172.21.185.3:8080/Test/bookIntroduction',
+                 url:'http://192.168.83.1:8080/Test/bookIntroduction',
                  type:'post',
                  dataType:'json',
                  data:{
@@ -76,16 +142,27 @@ export default {
                     console.log("书籍详情页");
                  }
              });
-             // 获取书的详情介绍，以及书对应的评论
-             // 获取用户ID，
-             // 发送此本书的状态，检查是否在想读/拥有/读过的序列中
+             /*$.ajax({
+                url:'',
+                type:'post',
+                data:{
+                    data:JSON.stringify(obj)
+                },
+                success:function(data){
+                     //this.comments=data;
+                },
+                error:function(){
+
+                }
+             });*/
 	 	}
 	 },
 	 components:{
 	 	'myheader':require('../components/myheader.vue'),
 	 	'myfooter':require('../components/myfooter.vue'),
     'bookscore':require('../components/staticstars.vue'),
-    'commenteditor':require('../components/commenteditor.vue')
+    'commenteditor':require('../components/commenteditor.vue'),
+    'comments':require('../components/comment.vue')
 	 },
    computed:{
      bookSentenceArr:function(){
@@ -115,7 +192,8 @@ export default {
    methods:{
       jdugeLogin:function(){
           if(!this.userId){
-               this.$route.router.go('/login');
+               //var redirect=
+               this.$route.router.go('/login?redirect='+encodeURIComponent(this.$route.path));
                return false;
           }
           return true;
@@ -150,7 +228,7 @@ export default {
           };
           var self=this;
           $.ajax({
-              url:'http://172.21.185.3:8080/Test/choosetrend',
+              url:'http://192.168.83.1:8080/Test/choosetrend',
               type:'post',
               data:{
                   data:JSON.stringify(tempObj)
@@ -180,7 +258,7 @@ export default {
          };
          var self=this;
          $.ajax({
-             url:'http://172.21.185.3:8080/Test/choosetrend',
+             url:'http://192.168.83.1:8080/Test/choosetrend',
              type:'post',
              data:{
                data:JSON.stringify(tempObj)
@@ -207,12 +285,12 @@ export default {
         };
         var self=this;
         $.ajax({
-           url:'http://172.21.185.3:8080/Test/choosetrend',
+           url:'http://192.168.83.1:8080/Test/choosetrend',
            type:'post',
            data:{
                data:JSON.stringify(tempObj)
            },
-           success:function(){
+           success:function(data){
                 self.btnStatus.have=true;
                 biu('好的，知道你有这本书了',{
                       type:'success'
@@ -223,6 +301,11 @@ export default {
            }
         });
         // this.judgeBtnClass.haveBtn['gray']=true;
+      },
+      showComments:function(data){
+             data.forEach(function(item){
+                 
+             });
       }
    }
 }
