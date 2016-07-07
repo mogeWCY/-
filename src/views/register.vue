@@ -29,7 +29,8 @@ export default {
 		   username:'',
            useremail:'',
            password: '',
-           iptType:'password'
+           iptType:'password',
+           userImgUrl:''
 		}
 	},
   ready (){
@@ -50,8 +51,8 @@ export default {
                             useremail:this.useremail
                         };
                    
-                // ajax 提交，
-                     $.ajax({
+                //ajax 提交，
+                    $.ajax({
                 	       url:'http://172.21.185.3:8080/Test/enroll',
                          type:'post',
                 	       data:{
@@ -63,6 +64,7 @@ export default {
 
                                            localStorage.username=self.username;
                                            localStorage.userId=data.userId;
+                                           localStorage.userImgUrl='http://u.51testing.com/avatar.php?uid=132585&size=middle';
                                            self.$route.router.go('/setting');
                                     }else{
                                           biu('用户名已被注册，请重新填写',{
@@ -73,6 +75,25 @@ export default {
                 	       error:function(){
                             console.log("注册页错误");
                 	       }
+                    });
+
+                     var temp1={
+                       userID:this.userId,
+                       userName:this.username,
+                       userImgUrl:"http://u.51testing.com/avatar.php?uid=132585&size=middle"
+                     };
+
+                    $.ajax({
+                        url:'http://192.168.191.1:8080/example_mysql/rest/upload',
+                        type:'post',
+                        data:JSON.stringify(temp1),
+                        contentType:'application/json',
+                        success:function(data){
+                            console.log(data);
+                        },
+                        error:function(){
+
+                        }
                     });
             }
 		},

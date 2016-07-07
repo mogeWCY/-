@@ -2,15 +2,15 @@
 	  <div v-for="comment in comments" track-by="$index">
 
       <div class="judge" v-if="comment.type==0">
-         <p>{{ comment.userName }}</p>
+         <img :src="comment.userImgUrl" v-link="{ params:{userId:comment.userId},name:'user'}">
+         <span v-link="{ params:{userId:comment['userId']},name:'user'}">{{ comment.userName }}</span>
          <p>{{ comment.content }}</p>
          <button type="button" @click="say($index)">查看评论</button>
-         {{ $index }}
       </div>
       <div class="a">
-           <p v-if="comment.type!=0"><strong>{{ comment.userName }}</strong>
-           <span v-if="comment.replyto">回复{{ comment.replyto }}</span>
-           {{ comment.content }}</p>
+           <span v-if="comment.type!=0" v-link="{ params:{userId:comment['userId']},name:'user'}"><strong>{{ comment.userName }}</strong></span>
+           <span v-if="comment.replyto">回复</span><span v-link="{ params:{userId:comment.pid},name:'user'}">{{ comment.replyto }}</span>
+           <span>{{ comment.content }}</span>
             <comments :comments="comment.son"></comments>
       </div>
       <div class="b" v-if="comment.type==0">
@@ -21,71 +21,6 @@
 <script>
  export default{
  	data (){
- 		 var bookComments=[
-         {
-            "content":"《活着》这本书是个好书啊",
-            "id":1,
-            "time":"2016-06-22",
-            "replyto":"",
-            "userName":"小明",
-            "son":[
-                    {
-                      "content":"1楼沙发",
-                      "id":3,
-                      "time":"2016-06-23",
-                      "replyto":"小明",
-                      "userName":"小红",
-                      "son":[
-                            {
-                              "content":"沙发什么沙发，水货",
-                              "id":5,
-                              "time":"2016-06-24",
-                              "replyto":"小红",
-                              "userName":"小亮",
-                              "son":[],
-                              "pid":3,
-                              "type":1
-                            },
-                            {
-                              "content":"别乱刷存在感",
-                              "id":6,
-                              "time":"2016-06-24",
-                              "replyto":"小红",
-                              "userName":"阿狸",
-                              "son":[],
-                              "pid":3,
-                              "type":1
-                            }
-                            ],
-                      "pid":1,
-                      "type":1
-                    }
-                    ],
-            "pid":0,
-            "type":0
-         },
-         {
-            "content":"还可以吧 ",
-            "id":2,
-            "time":"2016-06-22",
-            "replyto":"",
-            "userName":"2楼",
-            "son":[
-                     {
-                        "content":"可以",
-                        "id":4,
-                        "time":"2016-06-23",
-                        "replyto":"ssss",
-                        "userName":"pang",
-                        "son":[],
-                        "pid":2,
-                        "type":1
-                     }
-                  ],
-            "pid":0,
-            "type":0
-           }
-         ];
  		return {
  			//comments:bookComments
  		}
@@ -95,8 +30,13 @@
                      var ele=document.getElementsByClassName('judge')[idx].nextElementSibling;
                      var ele2=ele.nextElementSibling;
                      if(ele.style.display=='none'){
-                       ele.style.display='block';
-                       ele2.style.display='block';
+                        console.log(ele);
+                        ele.style.display='block';
+                        ele2.style.display='block';
+                        let allEles=ele.getElementsByTagName('*');
+                        for(let i=0,len=allEles.length;i<len;i++){
+                        	 allEles[i].style.display='block';
+                        }
                      }else{
                        ele.style.display='none';
                        ele2.style.display='none';
@@ -106,11 +46,26 @@
  	props:['comments'],
  	components:{
  		'comments':require('./comment.vue')
+ 	},
+ 	name:'comments',
+ 	ready () {
+ 		var allEles=document.getElementsByClassName('a');
+ 		var allEles1=document.getElementsByClassName('b');
+ 		for(let i=0,len=allEles.length;i<len;i++){
+ 			 allEles[i].style.display='none';
+ 		}
+ 		for(let i=0,len=allEles1.length;i<len;i++){
+ 			 allEles1[i].style.display='none';
+ 		}
  	}
  }
 </script>
 <style scoped>
 .judge{
 	border:1px solid red;
+}
+.judge img{
+	width: 60px;
+	height: 60px;
 }
 </style>

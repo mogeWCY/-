@@ -52,7 +52,7 @@ export default {
                    self.$route.router.go(redirect);*/
                   // 提交email和密码
                   $.ajax({
-                    url:'http://172.21.185.3:8080/Test/login',
+                    url:'http://192.168.155.1:8080/Test/login',
                     dataType:'json',
                     type:'post',
                     data:{

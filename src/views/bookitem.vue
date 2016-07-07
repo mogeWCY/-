@@ -33,7 +33,6 @@
        <commenteditor></commenteditor>
   </div>
 </div>
-<button type="button" @click="test">test</button>
 <myfooter></myfooter>
 </template>
 <script>
@@ -47,6 +46,8 @@ export default {
             "time":"2016-06-22",
             "replyto":"",
             "userName":"小明",
+            "userId":123,
+            "userImgUrl":'https://sfault-avatar.b0.upaiyun.com/337/270/337270487-574ecf99584f4_huge256',
             "son":[
                     {
                       "content":"1楼沙发",
@@ -54,6 +55,8 @@ export default {
                       "time":"2016-06-23",
                       "replyto":"小明",
                       "userName":"小红",
+                      "userId":124,
+                      "userImgUrl":"https://pic1.zhimg.com/b1df50c64_m.jpg",
                       "son":[
                             {
                               "content":"沙发什么沙发，水货",
@@ -61,6 +64,8 @@ export default {
                               "time":"2016-06-24",
                               "replyto":"小红",
                               "userName":"小亮",
+                              "userId":125,
+                              "userImgUrl":'https://pic1.zhimg.com/290ed4e12bf2147dd040cf7f7ddf2d58_m.jpg',
                               "son":[],
                               "pid":3,
                               "type":1
@@ -71,6 +76,8 @@ export default {
                               "time":"2016-06-24",
                               "replyto":"小红",
                               "userName":"阿狸",
+                              "userId":126,
+                              "userImgUrl":"https://pic4.zhimg.com/799df728d7d9e8e39988e2d49652b9eb_m.png",
                               "son":[],
                               "pid":3,
                               "type":1
@@ -89,6 +96,8 @@ export default {
             "time":"2016-06-22",
             "replyto":"",
             "userName":"2楼",
+            "userId":127,
+            "userImgUrl":"https://pic3.zhimg.com/e231cbdea_m.jpg",
             "son":[
                      {
                         "content":"可以",
@@ -96,6 +105,8 @@ export default {
                         "time":"2016-06-23",
                         "replyto":"ssss",
                         "userName":"pang",
+                        "userId":128,
+                        "userImgUrl":"https://pic2.zhimg.com/b8122761a03db2d4f31ca7608f02030d_m.jpg",
                         "son":[],
                         "pid":2,
                         "type":1

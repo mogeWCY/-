@@ -144,7 +144,7 @@ var  guessYouLikeBookData=[
               };
               var self=this;
               $.ajax({
-                 url:'http://172.21.185.3:8080/Test/searchresult',
+                 url:'http://192.168.155.1:8080/Test/searchresult',
                  type:'post',
                  data:{
                     keyWord:JSON.stringify(keyWord)

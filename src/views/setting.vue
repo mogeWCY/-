@@ -1,7 +1,7 @@
 <template>
 	<myheader></myheader>
 	<div class="change-user-info-container">
-	   <form action="" method="post" @submit.prevent='changeInfo'>
+  <form>
 	            <div>
 	   	    	<label for="username">昵称</label>
 	   	    	<input type="text" name="userName" v-model="userInfo.userName">
@@ -48,22 +48,18 @@
 	   	    	<span v-for="book in userInfo.have">《{{ book.bookName }}》<i @click="delateBook" class="fa fa-times-circle" aria-hidden="true" name="mybooktag"></i></span>
                 </div>
                 </div>
-                 <form action="http://172.21.185.2:8080/example_mysql/rest/upload/image" type="post">
+                <!--
                 <div class="userimg">
                 <input type="hidden" v-model="userId" name="userId">
-                	   	<label for="">修改头像</label>
-	   	    			<img :src="userInfo.userImgUrl">
+                	   	<label for="">修改头像</label>-->
+	   	    			<!--<img :src="userInfo.userImgUrl">
 	   	    			<input type="file" accept="image/jpeg,image/gif,image/png" @change="uploadImg" id='filebtn'>
 	   	    			<button type="button" @click="mocklClick">修改头像</button>
-	   	    			</div>
+	   	    			</div>-->
 	   	    	<div class="submit">
-	   	    		<input type="submit" value="提交">
+	   	    		<input type="submit" value="提交" @click="changeInfo">
 	   	    	</div>
-	   	    	</form>
-	   </form>
-	   <div>
-	   	   <img :src="imageUrl">
-	   </div>
+            </form>
 	</div>
 	<myfooter></myfooter>
 </template>
@@ -87,8 +83,11 @@
                  userInfo:'',
                  userId:localStorage.userId,
                  iptType:'password',
+                 username:localStorage.username,
                  imageUrl:'',
-                 inputPwd:''
+                 inputPwd:'',
+                 userImgUrl:localStorage.userImgUrl,
+                 hello:10
            }
 		},
 		route :{
@@ -102,7 +101,7 @@
                	  userId:this.userId
                };
                var self=this;
- 				$.ajax({
+ 				       $.ajax({
                    url:'http://192.168.83.1:8080/Test/userinfo',
                    type:'post',
                    data:{
@@ -110,6 +109,7 @@
                    },
                    success:function(data){
                    	    self.userInfo=data;
+                        //self.userInfo.userImgUrl=''
                         console.log(data);
                    },
                    error:function(){
@@ -161,7 +161,7 @@
              	var idx=[].indexOf.call(allXIcons,e);
                 this.userInfo.have.splice(idx,1);
              },
-             uploadImg:function(e){
+             /*uploadImg:function(e){
                    var files = e.target.files || e.dataTransfer.files;
                    if (!files.length)
                          return;
@@ -179,7 +179,7 @@
              mocklClick:function(){
              	  var ipt=document.querySelector('#filebtn');
                   ipt.click();
-             },
+             },*/
              validate:function(){
              	 for(var item in this.userInfo){
              	 	if(!this.userInfo[item]){
@@ -214,11 +214,11 @@
                     	  changeInfo:JSON.stringify(self.userInfo)
                     	},
                     	success:function(data){
-                           if(!data["ifDuplicate"]){
+                           var flag=JSON.parse(data).ifDuplicate;
+                           if(!flag){
                               biu("你的昵称已被占用",{
                                 type:'warning'
                               });
-                              return false;
                            }else{
                             biu('信息修改成功',{
                            	  type:'success'
@@ -228,7 +228,9 @@
                     	error:function(){
 
                     	}
-                    })
+                    });
+
+                    
              	}
              },
              cacheInfo:function(){
@@ -311,7 +313,7 @@
         height: 100px;
 	}
 	.userimg input[type="file"]{
-		visibility: hidden;
+		/*visibility: hidden;*/
 	}
 	.userimg button{
 		display: block;

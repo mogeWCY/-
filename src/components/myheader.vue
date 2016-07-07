@@ -12,7 +12,7 @@
 		    <span  @click='showLoginModal' v-if="!hasLogin">登录</span>
 		    <div class="dropdown" v-if="hasLogin">
 		    <div>
-		    	  <img :src="userInfo.imgUrl">
+		    	  <img :src="userInfo.userImgUrl">
 		          <span>{{userInfo.username}}</span>
 		    </div>
 		    <ul>
@@ -38,7 +38,7 @@ export default {
          	 isShowRegister:false,
          	 searchKeyWord:'',
          	 userInfo:{
-         	 	imgUrl:'http://ww3.sinaimg.cn/large/e5f5244ajw1f5fntrodyij200p00p0gk.jpg',
+         	 	userImgUrl:localStorage.userImgUrl,
          	 	username:localStorage.username,
          	 	userId:localStorage.userId
          	 }

@@ -7,14 +7,14 @@
          <a v-link="{ path:'/setting' }" v-if="!showBtn">编辑资料</a>
       </div>
       <div class="top">
-  			<span>{{ userInfo.username }},</span>
-        {{ userInfo.userprofile}}
+  			<span>{{ userInfo.userName }},</span>
+        {{ userInfo.profile}}
         </div>
         <div class="body">
           <img :src="userInfo.userImgUrl" alt="{{ userInfo.username }}">
           <div>
           <i class="fa fa-map-marker" aria-hidden="true"></i>
-         <span>{{ userInfo.address[0] + userInfo.address[1] }}</span>
+         <span>{{ userInfo.city }}</span>
          </div>
          <div>
          <i class="fa fa-mars" aria-hidden="true" name="sex"></i>
@@ -25,20 +25,24 @@
   		</div>
   		<div class="relation-info">
            <div>
-             <p>关注了<span class="point">{{userInfo.concerndPersons.length }}</span>人</p>
+             <p>关注了<span class="point">{{ concerndPersons.length }}</span>人</p>
              <button type="button" v-if="showBtn" @click="concernIndexPerson">我要关注</button>
            </div>
   		</div>
   	</div>
   	<div class="followees-info">
-  		<div v-for='person in userInfo.concerndPersons'>
-  			<img :src="person.userImgUrl" v-link="{params:{userId:person.userId},name:'user'}">
+  		<div v-for='person in concerndPersons'>
+  			<img :src="person.userImgUrl" v-link="{params:{userId:person.attentionID},name:'user'}">
         <div class="main-content">
-  			<a v-link="{params:{userId:person.userId},name:'user'}"> {{ person.username }} </a>
-  			<p>{{ person.userprofile }}</p>
+  			<a v-link="{params:{userId:person.attentionID},name:'user'}"> {{ person.attentionName }} </a>
+  			<!--<p>{{ person.userprofile }}</p>-->
         </div>
-          <button type="button" v-if="person.show" @click='change' data-index="{{ $index }}">取消关注</button>
-          <button type="button" v-else  class="show" @click='change' data-index="{{ $index }}">关注</button>
+          <div  v-if="!showBtn">
+          <button type="button" v-if="person.show" @click='change' data-index="{{ $index }}" 
+          data-type="ok">取消关注</button>
+          <button type="button" v-else  class="show" @click='change' data-index="{{ $index }}"
+          data-type="cancel">关注</button>
+          </div>
   		</div>
   	</div>
   </div>
@@ -82,18 +86,51 @@ export default {
                }
             ]
            };
-           userInfo.concerndPersons.forEach(function(item){
-                item.show=true;
-           });
+
            return {
-             	userInfo:userInfo,
+             	userInfo:'',
               queryUserId:'',
-              myId:localStorage.userId
+              myId:localStorage.userId,
+              concerndPersons:'',
+              username:localStorage.username
            }
 		},
 		route:{
          data (transition){
               this.queryUserId=transition.to.params.userId;
+              var temp={
+                 queryUserId:this.queryUserId
+              };
+              var self=this;
+              $.ajax({
+                url:'http://192.168.155.1:8080/Test/interestlist',
+                type:'post',
+                data:{
+                   data:JSON.stringify(temp)
+                },
+                success:function(data){
+                   //console.log(data);
+                   self.userInfo=data;
+                },
+                error:function(){
+
+                }
+              });
+             $.ajax({
+                 url:'http://172.21.185.2:8080/example_mysql/rest/attention/1',
+                 type:'get',
+                 success:function(data){
+                    console.log(data);
+                    self.concerndPersons=data;
+                    self.concerndPersons.forEach(function(item){
+                          item.show=true;
+                    });
+                 },
+                 error:function(){
+
+                 }
+              });
+
          }
 		},
 		ready () {
@@ -104,37 +141,93 @@ export default {
               }else{
                  sexIcons[0].style.display="none";
               }
+
 		},
 		components:{
 			'myheader':require('../components/myheader.vue'),
 			'myfooter':require('../components/myfooter.vue')
 		},
     methods:{
-       change:function(event){
+       change:function(event){/*
            var idx=event.target.dataset.index;
-           var flag=this.userInfo.concerndPersons[idx].show;
-           this.userInfo.concerndPersons[idx].show=!flag;
-           /*
+           var flag=this.concerndPersons[idx].show;
+           //alert(flag);
+           this.concerndPersons[idx].show=!flag;
+           var temp={
+             userId:this.userId,
+             concernPersonId:this.concerndPersons[idx].attentionID
+           }
             $.ajax({
                url:'',
-               type:'',
-               data:'' 
-               //判断show的状态，发送本人ID和关注的人ID和这个状态
-               success:function(){
-                   
+               type:'post',
+               data:{
+                   data:JSON.stringify(temp)
+               },
+               success:function(data){
+                   console.log(data);
                },
                error:function(){
   
                }
-            })
+            });*/
+           var idx=event.target.dataset.index;
+           if(event.target.dataset.type=='ok'){
+                this.okConcern(idx);
+           }else{
+                this.cancelConcern(idx);
+           }
+       },
+       okConcern:function(idx){
+           var temp={
+              "userID":this.myId,
+              "userName":this.username,
+              "attentionName":this.concerndPersons[idx].attentionName,
+              "attentionUserID":this.concerndPersons[idx].attentionID,
+              "attentionID":1
+           }
+           $.ajax({
+              url:'http://172.21.185.2:8080/example_mysql/rest/attention/delete',
+              type:'post',
+              data:JSON.stringify(temp),
+              contentType:'application/json',
+              success:function(data){
+                  alert('true');
+                  self.concerndPersons[idx].show=true;
+              },
+              error:function(){
 
-            */
+              }
+           });
+
+       },
+       cancelConcern:function(idx){
+           var temp={
+              "userID":this.myId,
+              "attentionUserID":this.concerndPersons[idx].attentionID,
+           }
+           $.ajax({
+              url:'http://172.21.185.2:8080/example_mysql/rest/attention',
+              type:'post',
+              data:{
+                // data:JSON.stringify(temp),
+                'name':'wcy',
+                'age':12
+              },
+              contentType:'application/json',
+              success:function(data){
+                  alert('true');
+                  self.concerndPersons[idx].show=false;
+              },
+              error:function(){
+
+              }
+           });
        },
        concernIndexPerson:function(event){
              var self=this;
              var obj={
-                 concernPersonId:this.queryUserId,
-                 concernd:event.target.dataset.concernd
+                 "concernPersonId":this.queryUserId,
+                 "concernd":event.target.dataset.concernd
              };
              $.ajax({
                   url:'',

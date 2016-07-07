@@ -1,11 +1,13 @@
 <template>
    <div class="editor">
         <h2>快来发表评价吧</h2>
+        <!--
    	  <div class="title">
    	  	   <label for="title">标题</label>
             <input type="text" name="title" v-model="title" @focus="judgeLogin" maxlength="20"
             placeholder="最长不超过20字">
    	  </div>
+      -->
         <div class="store">
             <span>评价:</span>
             <input type="radio" name="score" value='1.8' v-model="score" @click="judgeLogin"><span>很差</span>
@@ -33,14 +35,20 @@ import biu from 'biu.js'
              title:'',
              content:'',
              score:0,
-             beginFlow:''
+             beginFlow:'',
+             userId:localStorage.userId,
+             userName:localStorage.username
           }
        },
        methods:{
-          judgeLogin:function(){
-             // 判断登录状态
-             // 未登录则显示登录页面
-          },
+      jdugeLogin:function(){
+          if(!this.userId){
+               //var redirect=
+               this.$route.router.go('/login?redirect='+encodeURIComponent(this.$route.path));
+               return false;
+          }
+          return true;
+      },
           judgeLen:function(){
             if(this.title>20||this.content>300){
                biu('请注意字数限制',{
@@ -60,15 +68,34 @@ import biu from 'biu.js'
              return true;
           },
           sendComment:function(){
-              this.judgeLogin();
+              if(!this.jdugeLogin()){
+                  return -1;
+              }
               if(!this.judgeEmpty()||!this.judgeLen()){//如果有空或者长度有限制，则退出函数
                  return -1;
               }
               //  获取评论数据，用户数据，书籍数据
               // ajax提交数据
-              biu('发布成功',{
-                type:'waring'
-              });
+              var self=this;
+              var data={
+                   userId:this.userId,
+                   userName:this.userName,
+                   content:this.content,
+                   score:this.score
+              };
+              $.ajax({
+                 url:'',
+                 type:"post",
+                 data:JSON.stringify(data),
+                 success:function(data){
+                         biu('发布成功',{
+                            type:'success'
+                         });
+                 },
+                 error:function(){
+
+                 }
+              })
           }
        },
        computed:{
