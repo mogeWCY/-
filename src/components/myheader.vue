@@ -12,12 +12,13 @@
 		    <span  @click='showLoginModal' v-if="!hasLogin">登录</span>
 		    <div class="dropdown" v-if="hasLogin">
 		    <div>
-		    	  <img :src="userInfo.userImgUrl">
+		    	  <img :src="userInfo.userImgUrl" class="head_img">
 		          <span>{{userInfo.username}}</span>
 		    </div>
 		    <ul>
 		    	<li><a v-link="{params:{userId:userInfo.userId},name:'user'}">个人主页</a></li>
 		    	<li><a v-link="{path:'/notice',name:'notice'}">系统通知</a></li>
+		    	<li><a v-link="{ params:{ userId: userInfo.userId },name:'followees'}">关注者</a></li>
 		    	<li><a href="#" @click.prevent="logout">退出登录</a></li>
 		    </ul>
 		    </div>
@@ -38,11 +39,39 @@ export default {
          	 isShowRegister:false,
          	 searchKeyWord:'',
          	 userInfo:{
-         	 	userImgUrl:localStorage.userImgUrl,
+         	 	userImgUrl:'data:image/png;base64,',
          	 	username:localStorage.username,
          	 	userId:localStorage.userId
          	 }
          }
+	},
+	ready (){
+		  var data={
+		  	 userId:this.userInfo.userId,
+		  	 index:4,
+		  	 login:true
+		  };
+		  if(this.userInfo.userId&&!localStorage.userImgUrl){
+		  var self=this;
+		  setTimeout(function(){
+                       $.ajax({
+          					url:'http://192.168.155.1:8080/Test/mainpage',
+          					type:'post',
+          					data:{
+                					index:JSON.stringify(data)
+          					},
+          					success:function(data){
+          						console.log('hello world');
+               					console.log(data);
+               					self.userInfo.userImgUrl+=data[0].userinfo.coverImg;
+               					localStorage.userImgUrl=self.userInfo.userImgUrl;
+          					},
+          					error:function(){
+
+          					}
+         				 });
+		  },2500);
+		}
 	},
 	computed:{
         'hasLogin':function(){
@@ -149,5 +178,9 @@ export default {
 	}
 	.nav-userInfo ul li:hover{
 		background:rgba(246,241,246,0.43);
+	}
+	.head_img{
+		width: 30px;
+		height: 30px;
 	}
 </style>

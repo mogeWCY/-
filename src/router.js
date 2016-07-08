@@ -74,7 +74,12 @@ module.exports = function(router){
            component:function(resolve){
                 require(['./views/register.vue'],resolve)
            }
-        }
+        },
+       '/w':{
+           component:function(resolve){
+                require(['./views/a.vue'],resolve)
+           }
+        },
     })
 	
 }

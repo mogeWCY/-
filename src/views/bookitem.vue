@@ -134,10 +134,11 @@ export default {
              this.bookId=transition.to.params.bookId;
              var obj={
                   bookId:this.bookId,
-                  userId:this.userId
+                  userId:this.userId,
+                  login:(this.userId)?true:false
              };
              $.ajax({
-                 url:'http://192.168.83.1:8080/Test/bookIntroduction',
+                 url:'http://192.168.155.1:8080/Test/bookIntroduction',
                  type:'post',
                  dataType:'json',
                  data:{
@@ -153,19 +154,20 @@ export default {
                     console.log("书籍详情页");
                  }
              });
-             /*$.ajax({
-                url:'',
+             $.ajax({
+                url:'http://192.168.155.1:8031/example_mysql/rest/comment/'+self.bookId,
                 type:'post',
-                data:{
-                    data:JSON.stringify(obj)
-                },
+               /* data:{
+                    bookId:self.bookId
+                },*/
                 success:function(data){
-                     //this.comments=data;
+                     self.comments=data;
+                     console.log(data);
                 },
                 error:function(){
 
                 }
-             });*/
+             });
 	 	}
 	 },
 	 components:{
@@ -239,7 +241,7 @@ export default {
           };
           var self=this;
           $.ajax({
-              url:'http://192.168.83.1:8080/Test/choosetrend',
+              url:'http://192.168.155.1:8080/Test/choosetrend',
               type:'post',
               data:{
                   data:JSON.stringify(tempObj)
@@ -269,7 +271,7 @@ export default {
          };
          var self=this;
          $.ajax({
-             url:'http://192.168.83.1:8080/Test/choosetrend',
+             url:'http://192.168.155.1:8080/Test/choosetrend',
              type:'post',
              data:{
                data:JSON.stringify(tempObj)
@@ -296,7 +298,7 @@ export default {
         };
         var self=this;
         $.ajax({
-           url:'http://192.168.83.1:8080/Test/choosetrend',
+           url:'http://192.168.155.1:8080/Test/choosetrend',
            type:'post',
            data:{
                data:JSON.stringify(tempObj)

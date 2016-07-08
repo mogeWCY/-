@@ -7,11 +7,11 @@
          <a v-link="{ path:'/setting' }" v-if="!showBtn">编辑资料</a>
       </div>
       <div class="top">
-  			<span>{{ userInfo.userName }},</span>
+  			<span>{{ username }},</span>
         {{ userInfo.profile}}
         </div>
         <div class="body">
-          <img :src="userInfo.userImgUrl" alt="{{ userInfo.username }}">
+          <img :src="userImgUrl" alt="{{ userInfo.username }}">
           <div>
           <i class="fa fa-map-marker" aria-hidden="true"></i>
          <span>{{ userInfo.city }}</span>
@@ -38,10 +38,11 @@
   			<!--<p>{{ person.userprofile }}</p>-->
         </div>
           <div  v-if="!showBtn">
-          <button type="button" v-if="person.show" @click='change' data-index="{{ $index }}" 
-          data-type="ok">取消关注</button>
-          <button type="button" v-else  class="show" @click='change' data-index="{{ $index }}"
-          data-type="cancel">关注</button>
+         <!-- <button type="button"  @click='change' data-index="{{ $index }}" 
+          data-type="cancel">取消关注</button>
+          <button type="button"  class="show" @click='change' data-index="{{ $index }}"
+          data-type="ok">关注</button>-->
+          <button type="button" data-type="cancel" data-index="{{ $index }}" @click='change'>取消关注</button>
           </div>
   		</div>
   	</div>
@@ -51,48 +52,15 @@
 <script>
 export default {
 		data () {
-            var  userInfo ={
-            userImgUrl:'https://sfault-avatar.b0.upaiyun.com/337/270/337270487-574ecf99584f4_huge256',
-            username:'浴火小青春',
-            sex:'男',
-            qqnumber:2938429494,
-            address:['湖北省','武汉市','洪山区','珞瑜路','1037号'],
-            userprofile:'音浪太强，不晃会被撞到地上',
-            concerndTags:["文学","历史","小说","童话","故事","科幻","耽美","诗歌"],
-            concerndPersons:[
-               {
-                  userId:111111,
-                  userImgUrl:'http://h.hiphotos.baidu.com/image/h%3D300/sign=6f12a43cb4315c605c956defbdb0cbe6/a5c27d1ed21b0ef494399077d5c451da80cb3ec1.jpg',
-                  username:'Awee',
-                  userprofile:'快上车，没时间解释了'
-               },
-               {
-                  userId:222222,
-                  userImgUrl:'http://tva3.sinaimg.cn/crop.0.0.279.279.50/005N3SJDgw1eklpq2cgg2j307s07saa1.jpg',
-                  username:'林taro',
-                  userprofile:'想要做一个写代码很美的人'
-               },
-               {
-                  userId:333333,
-                  userImgUrl:'http://tva2.sinaimg.cn/crop.0.0.511.511.50/005SiNxyjw1emjqhw1hk7j30e80e8q33.jpg',
-                  username:'空白白白白',
-                  userprofile:'一个数据工程师'
-               },
-               {
-                  userId:444444,
-                  userImgUrl:'http://tva2.sinaimg.cn/crop.0.0.180.180.50/685cab87jw1e8qgp5bmzyj2050050aa8.jpg',
-                  username:'羽小团',
-                  userprofile:'处女座，不解释'
-               }
-            ]
-           };
 
            return {
              	userInfo:'',
               queryUserId:'',
               myId:localStorage.userId,
               concerndPersons:'',
-              username:localStorage.username
+              username:localStorage.username,
+              btnInner:"取消关注",
+              userImgUrl:localStorage.userImgUrl
            }
 		},
 		route:{
@@ -117,7 +85,7 @@ export default {
                 }
               });
              $.ajax({
-                 url:'http://172.21.185.2:8080/example_mysql/rest/attention/1',
+                 url:'http://192.168.155.1:8031/example_mysql/rest/attention/1',
                  type:'get',
                  success:function(data){
                     console.log(data);
@@ -148,51 +116,34 @@ export default {
 			'myfooter':require('../components/myfooter.vue')
 		},
     methods:{
-       change:function(event){/*
-           var idx=event.target.dataset.index;
-           var flag=this.concerndPersons[idx].show;
-           //alert(flag);
-           this.concerndPersons[idx].show=!flag;
-           var temp={
-             userId:this.userId,
-             concernPersonId:this.concerndPersons[idx].attentionID
-           }
-            $.ajax({
-               url:'',
-               type:'post',
-               data:{
-                   data:JSON.stringify(temp)
-               },
-               success:function(data){
-                   console.log(data);
-               },
-               error:function(){
-  
-               }
-            });*/
+       change:function(event){
            var idx=event.target.dataset.index;
            if(event.target.dataset.type=='ok'){
                 this.okConcern(idx);
+                event.target.dataset.type="cancel";
+                event.target.innerHTML="取消关注";
+                event.target.classList.remove('show');
            }else{
                 this.cancelConcern(idx);
-           }
+                event.target.dataset.type="ok";
+                event.target.innerHTML="关注";
+                event.target.classList.add('show');
+          }
        },
        okConcern:function(idx){
            var temp={
               "userID":this.myId,
               "userName":this.username,
               "attentionName":this.concerndPersons[idx].attentionName,
-              "attentionUserID":this.concerndPersons[idx].attentionID,
+              "attentionUserID":this.concerndPersons[idx].attentionUserID,
               "attentionID":1
            }
            $.ajax({
-              url:'http://172.21.185.2:8080/example_mysql/rest/attention/delete',
+              url:'http://172.21.185.2:8080/example_mysql/rest/attention',
               type:'post',
               data:JSON.stringify(temp),
               contentType:'application/json',
               success:function(data){
-                  alert('true');
-                  self.concerndPersons[idx].show=true;
               },
               error:function(){
 
@@ -203,23 +154,16 @@ export default {
        cancelConcern:function(idx){
            var temp={
               "userID":this.myId,
-              "attentionUserID":this.concerndPersons[idx].attentionID,
-           }
+              "attentionUserID":this.concerndPersons[idx].attentionUserID
+           };
+           var self=this;
            $.ajax({
-              url:'http://172.21.185.2:8080/example_mysql/rest/attention',
-              type:'post',
-              data:{
-                // data:JSON.stringify(temp),
-                'name':'wcy',
-                'age':12
-              },
-              contentType:'application/json',
+              url:'http://172.21.185.2:8080/example_mysql/rest/attention/delete',
+              type:'POST',
+              data:temp,
               success:function(data){
-                  alert('true');
-                  self.concerndPersons[idx].show=false;
               },
               error:function(){
-
               }
            });
        },

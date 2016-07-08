@@ -53,38 +53,40 @@ export default {
                    
                 //ajax 提交，
                     $.ajax({
-                	       url:'http://172.21.185.3:8080/Test/enroll',
+                	       url:'http://192.168.155.1:8080/Test/enroll',
                          type:'post',
                 	       data:{
                              userData:JSON.stringify(tempObj)
                          },
                 	       success:function(data){
+                                    console.log(typeof data);
+                                    var data=JSON.parse(data);
+                                    console.log(data.userId);
+                                    console.log(data.exist);
                                     console.log(data);
-                                    if(!data.exist){
-
+                                    //if(data.exist){
                                            localStorage.username=self.username;
                                            localStorage.userId=data.userId;
-                                           localStorage.userImgUrl='http://u.51testing.com/avatar.php?uid=132585&size=middle';
                                            self.$route.router.go('/setting');
-                                    }else{
+                                    /*}else{
                                           biu('用户名已被注册，请重新填写',{
                                               type:'warning'
                                           });
-                                    }
+                                    }*/
                 	               },
                 	       error:function(){
                             console.log("注册页错误");
                 	       }
                     });
 
-                     var temp1={
+                     /*var temp1={
                        userID:this.userId,
                        userName:this.username,
                        userImgUrl:"http://u.51testing.com/avatar.php?uid=132585&size=middle"
                      };
 
                     $.ajax({
-                        url:'http://192.168.191.1:8080/example_mysql/rest/upload',
+                        url:'http://192.168.83.1:8031/example_mysql/rest/upload',
                         type:'post',
                         data:JSON.stringify(temp1),
                         contentType:'application/json',
@@ -94,7 +96,7 @@ export default {
                         error:function(){
 
                         }
-                    });
+                    });*/
             }
 		},
     validate:function(){

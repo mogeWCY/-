@@ -32,7 +32,7 @@ import biu from 'biu.js'
 	 export default{
        data () {
           return {
-             title:'',
+             //title:'',
              content:'',
              score:0,
              beginFlow:'',
@@ -50,42 +50,48 @@ import biu from 'biu.js'
           return true;
       },
           judgeLen:function(){
-            if(this.title>20||this.content>300){
+            /*if(this.title>20||this.content>300){
                biu('请注意字数限制',{
                   type:'waring'
                });
                return false;
-            }
+            }*/
             return true;
           },
           judgeEmpty:function(){
-             if(!this.score||!this.title||!this.content){
+             /*if(!this.title||!this.content){
                biu("不要留空，请全部填完哦",{
                    type:'waring'
                });
                return false;
-             }
+             }*/
              return true;
           },
           sendComment:function(){
-              if(!this.jdugeLogin()){
+              /*if(!this.jdugeLogin()){
                   return -1;
               }
               if(!this.judgeEmpty()||!this.judgeLen()){//如果有空或者长度有限制，则退出函数
                  return -1;
-              }
+              }*/
               //  获取评论数据，用户数据，书籍数据
               // ajax提交数据
               var self=this;
+              var a=new Date();
               var data={
-                   userId:this.userId,
-                   userName:this.userName,
-                   content:this.content,
-                   score:this.score
+                   pid:0,
+                   type:0,
+                   replyto:'',
+                   bookID:this.$parent.bookId,
+                   time:a.getFullYear()+"-"+a.getMonth()+"-"+a.getDate(),
+                   userName:localStorage.username,
+                   content:this.content/*,
+                   score:this.score,*/
               };
               $.ajax({
-                 url:'',
+                 url:'http://192.168.155.1:8031/example_mysql/rest/comment',
                  type:"post",
+                 contentType:"application/json",
                  data:JSON.stringify(data),
                  success:function(data){
                          biu('发布成功',{
@@ -102,7 +108,8 @@ import biu from 'biu.js'
           remainTextTotal:function(){
              return  (300-this.content.length);
           }
-       }
+       }/*,
+       props:['bookID']*/
     }
 </script>
 <style scoped>

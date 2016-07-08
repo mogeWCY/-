@@ -11,7 +11,7 @@
         {{ userInfo.profile}}
         </div>
         <div class="body">
-          <img :src="userInfo.userImgUrl" alt="{{ userInfo.userName }}">
+          <img :src="userImgUrl" alt="{{ userInfo.userName }}">
           <div>
           <i class="fa fa-map-marker" aria-hidden="true"></i>
          <span>{{ userInfo.city }}</span>
@@ -69,7 +69,8 @@ export default {
            return {
              	userInfo:'',
               myId:localStorage.userId,
-              queryUserId:''
+              queryUserId:'',
+              userImgUrl:localStorage.userImgUrl
            }
 		},
 		route:{
@@ -85,15 +86,16 @@ export default {
                }
                var self=this;
                $.ajax({
-                   url:'http://192.168.83.1:8080/Test/userpage',
+                   url:'http://192.168.155.1:8080/Test/userpage',
                    type:'post',
                    data:{
                       queryUserId:JSON.stringify(tempObj)
                    },
                    success:function(data){
-                       console.log('hwllo');
-                       console.log(data);
+                       /*console.log('hwllo');
+                       console.log(data.coverImg);*/
                        self.userInfo=data;
+                      // self.userImgUrl+=data.coverImg;
                    },
                    error:function(){
   

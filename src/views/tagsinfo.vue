@@ -61,7 +61,7 @@
              // 获取标签信息,tagBooksData
              var self=this;
              $.ajax({
-                  url:'http://192.168.83.1:8080/Test/labelsearch',
+                  url:'http://192.168.155.1:8080/Test/labelsearch',
                   type:'post',
                   data:{
                      tagName:JSON.stringify(obj)

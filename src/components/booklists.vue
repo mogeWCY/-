@@ -133,14 +133,14 @@
       ready (){
            this.books=newBooksData;
            var newBook={
-               userId:localStorage.userId||'',
+               userId:localStorage.userId,
                index:1,
                login:(localStorage.userId)?true:false
            };
            var self=this;
            setTimeout(function(){
                          $.ajax({
-                              url:'http://192.168.83.1:8080/Test/mainpage',
+                              url:'http://192.168.155.1:8080/Test/mainpage',
                               type:'post',
                               dataType:'json',
                               data:{
